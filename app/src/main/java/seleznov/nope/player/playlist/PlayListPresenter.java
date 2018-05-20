@@ -11,7 +11,7 @@ import seleznov.nope.player.soundcloud.SoundCloudContract;
 public class PlayListPresenter implements PlayListContract.Presenter {
 
     @Override
-    public void takeView(SoundCloudContract.View view) {
+    public void takeView(PlayListContract.View view) {
 
     }
 

@@ -17,4 +17,7 @@ public class SoundCloudFragment extends DaggerFragment implements SoundCloudCont
 
     private View mView;
 
+    @Inject
+    public SoundCloudFragment(){};
+
 }

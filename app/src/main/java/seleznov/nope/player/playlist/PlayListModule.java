@@ -19,6 +19,6 @@ public abstract class PlayListModule {
 
     @ActivityScoped
     @Binds
-    abstract PlayListContract.Presenter playListPresenter(PlayListPresenter presenter);
+    abstract PlayListContract.Presenter presenter(PlayListPresenter presenter);
 
 }

@@ -10,6 +10,7 @@ import dagger.Component;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 import seleznov.nope.player.App;
+import seleznov.nope.player.playlist.PlayListModule;
 
 /**
  * Created by User on 19.03.2018.

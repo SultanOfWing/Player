@@ -10,11 +10,11 @@ import seleznov.nope.player.soundcloud.SoundCloudContract;
 
 public interface PlayListContract {
 
-    interface Presenter extends IPresenter<SoundCloudContract.View> {
+    interface Presenter extends IPresenter<PlayListContract.View> {
 
     }
 
-    interface View extends IView<SoundCloudContract.Presenter> {
+    interface View extends IView<PlayListContract.Presenter> {
 
     }
 }

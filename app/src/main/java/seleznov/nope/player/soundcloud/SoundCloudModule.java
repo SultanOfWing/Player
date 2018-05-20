@@ -6,6 +6,7 @@ import dagger.android.ContributesAndroidInjector;
 import seleznov.nope.player.di.ActivityScoped;
 import seleznov.nope.player.di.FragmentScoped;
 
+
 /**
  * Created by User on 19.05.2018.
  */
