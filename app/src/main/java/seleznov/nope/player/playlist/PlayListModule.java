@@ -2,6 +2,7 @@ package seleznov.nope.player.playlist;
 
 import dagger.Binds;
 import dagger.Module;
+import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import seleznov.nope.player.di.ActivityScoped;
 import seleznov.nope.player.di.FragmentScoped;
@@ -20,5 +21,11 @@ public abstract class PlayListModule {
     @ActivityScoped
     @Binds
     abstract PlayListContract.Presenter presenter(PlayListPresenter presenter);
+
+    @Provides
+    @ActivityScoped
+    static PlayListAdapter getFeedListAdapter(){
+        return new PlayListAdapter();
+    }
 
 }
