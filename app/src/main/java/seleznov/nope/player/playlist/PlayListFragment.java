@@ -20,6 +20,7 @@ import dagger.android.support.DaggerFragment;
 import seleznov.nope.player.R;
 import seleznov.nope.player.adapter.AdapterAbs;
 import seleznov.nope.player.helper.PermissionInspector;
+import seleznov.nope.player.model.TrackListManager;
 import seleznov.nope.player.model.dto.Track;
 
 /**
@@ -38,6 +39,8 @@ public class PlayListFragment extends DaggerFragment implements PlayListContract
     PlayListContract.Presenter mPlayListPresenter;
     @Inject
     PlayListAdapter mPlayListAdapter;
+    @Inject
+    TrackListManager mTrackListManager;
 
     @BindView(R.id.track_recycler_view)
     RecyclerView recyclerView;
@@ -87,6 +90,7 @@ public class PlayListFragment extends DaggerFragment implements PlayListContract
     @Override
     public void setPlayList(List<Track> trackList){
         mPlayListAdapter.setList(trackList);
+        mTrackListManager.setTrackList(trackList);
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 

@@ -1,5 +1,6 @@
 package seleznov.nope.player.playlist;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import seleznov.nope.player.model.dto.Track;
 
 public class PlayListAdapter extends AdapterAbs<Track, PlayListAdapter.PlayListHolder> {
 
+
     @NonNull
     @Override
     public PlayListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,10 +43,13 @@ public class PlayListAdapter extends AdapterAbs<Track, PlayListAdapter.PlayListH
         @BindView(R.id.track_artist)
         TextView trackArtist;
 
+        private Context mContext;
+
 
         public PlayListHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            mContext = itemView.getContext();
         }
 
         @Override
@@ -52,6 +57,10 @@ public class PlayListAdapter extends AdapterAbs<Track, PlayListAdapter.PlayListH
             trackName.setText(item.getTitle());
             trackArtist.setText(item.getArtist());
 
+            Picasso.with(mContext)
+                    .load(item.getAlbumArt())
+                    .placeholder(R.drawable.placeholder)
+                    .into(albumImg);
         }
     }
 }

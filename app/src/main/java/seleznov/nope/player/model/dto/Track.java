@@ -1,5 +1,7 @@
 package seleznov.nope.player.model.dto;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 
 /**
@@ -13,13 +15,16 @@ public class Track implements Serializable {
     private String mArtist;
     private String mAlbum;
     private String mAlbumId;
+    private String mAlbumArt;
+    private String mUri;
 
-    public Track(String id, String title, String artist, String album, String albumId){
+    public Track(String id, String title, String artist, String album, String albumId, String uri){
         mId = id;
         mTitle = title;
         mArtist = artist;
         mAlbum = album;
         mAlbumId = albumId;
+        mUri = uri;
     }
 
     public String getId() {
@@ -60,5 +65,21 @@ public class Track implements Serializable {
 
     public void setAlbumId(String albumId) {
         mAlbumId = albumId;
+    }
+
+    public String getAlbumArt() {
+        return mAlbumArt;
+    }
+
+    public void setAlbumArt(String albumArt) {
+        mAlbumArt = albumArt;
+    }
+
+    public String getUri() {
+        return mUri;
+    }
+
+    public void setUri(String uri) {
+        mUri = uri;
     }
 }

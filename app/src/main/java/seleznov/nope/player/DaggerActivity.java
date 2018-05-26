@@ -1,5 +1,7 @@
 package seleznov.nope.player;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -39,15 +41,19 @@ public class DaggerActivity extends DaggerAppCompatActivity {
     private List<Fragment> mFragmentList;
     private List<String> mFragmentTitleList;
 
+    public static Intent newIntent(Context context) {
+        return new Intent(context, DaggerActivity.class);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tab);
+        setContentView(R.layout.activity_fragment);
 
         ButterKnife.bind(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        init();
+        iniTab();
         viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
 
 
@@ -71,7 +77,7 @@ public class DaggerActivity extends DaggerAppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    private void init() {
+    private void iniTab() {
         mFragmentList = new ArrayList<>();
         mFragmentTitleList = new ArrayList<>();
         Resources res = getResources();
