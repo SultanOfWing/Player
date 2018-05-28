@@ -4,11 +4,13 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
@@ -23,6 +25,7 @@ import com.google.android.exoplayer2.upstream.FileDataSource;
 
 import javax.inject.Inject;
 
+import dagger.android.DaggerService;
 import seleznov.nope.player.DaggerActivity;
 import seleznov.nope.player.model.TrackListManager;
 import seleznov.nope.player.model.dto.Track;
@@ -31,7 +34,7 @@ import seleznov.nope.player.model.dto.Track;
  * Created by User on 25.05.2018.
  */
 
-public class PlaybackService extends Service {
+public class PlaybackService extends DaggerService {
 
     @Inject
     SimpleExoPlayer mExoPlayer;
@@ -44,6 +47,11 @@ public class PlaybackService extends Service {
     @Inject
     MediaSessionCompat mSession;
 
+    private AudioManager mAudioManager;
+
+    public static Intent newIntent(Context context){
+        return new Intent(context, PlaybackService.class);
+    }
 
     @Inject
     public PlaybackService() {}
@@ -51,13 +59,21 @@ public class PlaybackService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Context context = getApplicationContext();
+      //  mSession = new MediaSessionCompat(context,
+        //        this.getClass().getSimpleName());
+        Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON, null, //todo
+                context, MediaButtonReceiver.class);
+        mSession.setMediaButtonReceiver(PendingIntent.getBroadcast(context,
+                0, mediaButtonIntent, 0));
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         init();
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return new PlayerServiceBinder();
+        return new PlaybackServiceBinder();
     }
 
     private void init() {
@@ -81,6 +97,12 @@ public class PlaybackService extends Service {
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        MediaButtonReceiver.handleIntent(mSession, intent);
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         mSession.release();
@@ -91,16 +113,14 @@ public class PlaybackService extends Service {
         @Override
         public void onPlay() {
             Track track = mTrackListManager.getTrack();
-            MediaMetadataCompat metadata = mMetadataBuilder
-                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, track.getId())
-                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, track.getTitle())
-                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, track.getAlbum())
-                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, track.getArtist())
-                    .putString(MediaMetadataCompat.METADATA_KEY_ART_URI, track.getAlbumArt())
-                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, track.getUri())
-                    .build();
+            setMeta(track);
 
-            mSession.setMetadata(metadata);
+            int audioFocusResult = mAudioManager.requestAudioFocus(
+                    mAudioFocusChangeListener,
+                    AudioManager.STREAM_MUSIC,
+                    AudioManager.AUDIOFOCUS_GAIN);
+            if (audioFocusResult != AudioManager.AUDIOFOCUS_REQUEST_GRANTED)
+                return;
 
             mSession.setActive(true);
 
@@ -127,6 +147,8 @@ public class PlaybackService extends Service {
         public void onStop() {
             super.onStop();
             mExoPlayer.setPlayWhenReady(false);
+
+            mAudioManager.abandonAudioFocus(mAudioFocusChangeListener);
 
             mSession.setActive(false);
 
@@ -159,9 +181,42 @@ public class PlaybackService extends Service {
             
         }
 
+        private void setMeta(Track track){
+            MediaMetadataCompat metadata = mMetadataBuilder
+                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, track.getId())
+                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, track.getTitle())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, track.getAlbum())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, track.getArtist())
+              //      .putBitmap(MediaMetadataCompat.METADATA_KEY_ART, track.getAlbumArtBitmap())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ART_URI, track.getAlbumArt())
+                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, track.getUri())
+                    .build();
+
+            mSession.setMetadata(metadata);
+        }
+
     };
 
-    public class PlayerServiceBinder extends Binder {
+    private AudioManager.OnAudioFocusChangeListener mAudioFocusChangeListener =
+            new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int i) {
+            switch (i) {
+                case AudioManager.AUDIOFOCUS_GAIN:
+                    mediaSessionCallback.onPlay();
+                    break;
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                    mediaSessionCallback.onPause();
+                    break;
+                default:
+                    mediaSessionCallback.onPause();
+                    break;
+            }
+
+        }
+    };
+
+    public class PlaybackServiceBinder extends Binder {
         public MediaSessionCompat.Token getMediaSessionToken() {
             return mSession.getSessionToken();
         }

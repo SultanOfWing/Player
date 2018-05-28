@@ -11,58 +11,56 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
-import seleznov.nope.player.di.ActivityScoped;
+import seleznov.nope.player.di.ServiceScoped;
 
 /**
  * Created by User on 25.05.2018.
  */
 @Module
-public class PlaybackModule {
+public abstract class PlaybackModule {
 
-    @Singleton
     @Provides
-     MediaSessionCompat getMediaSession(PlaybackService service){
+    @ServiceScoped
+    static MediaSessionCompat getMediaSession(PlaybackService service){
         return new MediaSessionCompat(service.getApplicationContext(),
                 service.getClass().getSimpleName());
     }
 
-    @Singleton
     @Provides
-     MediaMetadataCompat.Builder getMetadataBuilder(){
+    @ServiceScoped
+    static MediaMetadataCompat.Builder getMetadataBuilder(){
         return new MediaMetadataCompat.Builder();
     }
 
-    @Singleton
     @Provides
-     PlaybackStateCompat.Builder getPlaybackBuilder(){
+    @ServiceScoped
+    static PlaybackStateCompat.Builder getPlaybackBuilder(){
         return new PlaybackStateCompat.Builder();
     }
 
-    @Singleton
     @Provides
-    DefaultRenderersFactory getRenderersFactory(Context context){
+    @ServiceScoped
+    static DefaultRenderersFactory getRenderersFactory(Context context){
          return new DefaultRenderersFactory(context);
     }
 
-    @Singleton
     @Provides
-    DefaultTrackSelector getTrackSelector(){
+    @ServiceScoped
+    static DefaultTrackSelector getTrackSelector(){
         return new DefaultTrackSelector();
     }
 
-    @Singleton
     @Provides
-    DefaultLoadControl getLoadControl(){
+    @ServiceScoped
+    static DefaultLoadControl getLoadControl(){
         return new DefaultLoadControl();
     }
 
-    @Singleton
     @Provides
-    SimpleExoPlayer getExoPlayer(DefaultRenderersFactory renderers, DefaultTrackSelector track,
+    @ServiceScoped
+    static SimpleExoPlayer getExoPlayer(DefaultRenderersFactory renderers, DefaultTrackSelector track,
                                  DefaultLoadControl load){
         return ExoPlayerFactory.newSimpleInstance(renderers, track, load);
     }

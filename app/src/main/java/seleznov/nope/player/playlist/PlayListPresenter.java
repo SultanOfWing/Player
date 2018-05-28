@@ -2,8 +2,11 @@ package seleznov.nope.player.playlist;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.provider.MediaStore;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +35,7 @@ public class PlayListPresenter implements PlayListContract.Presenter {
 
     @Override
     public void updatePlayList() {
-        List<Track> trackList = new ArrayList<>();//todo
+        List<Track> trackList = new ArrayList<>();
         Cursor cursor = MediaFinder.getAllMedia(mAppContext);
         MediaCursor mediaCursor = new MediaCursor(cursor);
 
@@ -49,8 +52,15 @@ public class PlayListPresenter implements PlayListContract.Presenter {
                         albumArtUri = albumAptCursor.getString(
                                 albumAptCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
                         currTrack.setAlbumArt(albumArtUri);
+                       // Uri uri = Uri.parse(albumArtUri);
+                      //  Bitmap bitmap = MediaStore.Images.Media.getBitmap(mAppContext.getContentResolver(),
+                      //          uri);
+                     //   currTrack.setAlbumArtBitmap(bitmap);
                     }
-                }finally {
+          //      }catch (IOException e){
+            //        e.printStackTrace();
+                }
+                finally {
                     albumAptCursor.close();
                 }
 

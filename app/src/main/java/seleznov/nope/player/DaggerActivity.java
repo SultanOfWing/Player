@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
+import seleznov.nope.player.controller.ControllerFragment;
 import seleznov.nope.player.playlist.PlayListFragment;
 import seleznov.nope.player.settings.SettingsFragment;
 import seleznov.nope.player.soundcloud.SoundCloudFragment;
@@ -31,6 +32,8 @@ public class DaggerActivity extends DaggerAppCompatActivity {
     SoundCloudFragment mSoundCloudFragment;
     @Inject
     SettingsFragment mSettingsFragment;
+    @Inject
+    ControllerFragment mControllerFragment;
 
     @BindView(R.id.viewpager)
     ViewPager viewPager;
@@ -75,6 +78,15 @@ public class DaggerActivity extends DaggerAppCompatActivity {
         });
 
         tabLayout.setupWithViewPager(viewPager);
+
+        Fragment fragment = fragmentManager.findFragmentById(R.id.controller_container);
+
+        if (fragment == null) {
+            fragment = mControllerFragment;
+            fragmentManager.beginTransaction()
+                    .add(R.id.controller_container, fragment)
+                    .commit();
+        }
     }
 
     private void iniTab() {

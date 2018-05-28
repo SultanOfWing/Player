@@ -12,18 +12,15 @@ import dagger.android.support.AndroidSupportInjectionModule;
 import seleznov.nope.player.App;
 import seleznov.nope.player.model.ModelModule;
 import seleznov.nope.player.playback.PlaybackModule;
-import seleznov.nope.player.playback.PlaybackService;
-import seleznov.nope.player.playlist.PlayListModule;
 
 /**
  * Created by User on 19.03.2018.
  */
 
 @Singleton
-@Component(modules = {PlaybackModule.class,
-        ModelModule.class,
+@Component(modules = {ModelModule.class,
         ApplicationModule.class,
-        ActivityBindingModule.class,
+        ComponentBindingModule.class,
         AndroidSupportInjectionModule.class})
 public interface AppComponent extends AndroidInjector<App> {
 

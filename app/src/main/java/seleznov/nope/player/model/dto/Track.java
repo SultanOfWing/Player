@@ -1,5 +1,6 @@
 package seleznov.nope.player.model.dto;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import java.io.Serializable;
@@ -16,6 +17,7 @@ public class Track implements Serializable {
     private String mAlbum;
     private String mAlbumId;
     private String mAlbumArt;
+    private Bitmap mAlbumArtBitmap;
     private String mUri;
 
     public Track(String id, String title, String artist, String album, String albumId, String uri){
@@ -73,6 +75,14 @@ public class Track implements Serializable {
 
     public void setAlbumArt(String albumArt) {
         mAlbumArt = albumArt;
+    }
+
+    public Bitmap getAlbumArtBitmap() {
+        return mAlbumArtBitmap;
+    }
+
+    public void setAlbumArtBitmap(Bitmap albumArtBitmap) {
+        mAlbumArtBitmap = albumArtBitmap;
     }
 
     public String getUri() {
