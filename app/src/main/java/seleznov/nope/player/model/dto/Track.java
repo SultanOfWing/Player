@@ -1,7 +1,6 @@
 package seleznov.nope.player.model.dto;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 
 import java.io.Serializable;
 
@@ -11,7 +10,7 @@ import java.io.Serializable;
 
 public class Track implements Serializable {
 
-    private String mId;
+    private Long mId;
     private String mTitle;
     private String mArtist;
     private String mAlbum;
@@ -20,7 +19,7 @@ public class Track implements Serializable {
     private Bitmap mAlbumArtBitmap;
     private String mUri;
 
-    public Track(String id, String title, String artist, String album, String albumId, String uri){
+    public Track(Long id, String title, String artist, String album, String albumId, String uri){
         mId = id;
         mTitle = title;
         mArtist = artist;
@@ -29,11 +28,11 @@ public class Track implements Serializable {
         mUri = uri;
     }
 
-    public String getId() {
+    public Long getId() {
         return mId;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         mId = id;
     }
 

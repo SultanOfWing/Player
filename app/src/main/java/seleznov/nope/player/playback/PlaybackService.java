@@ -1,14 +1,19 @@
 package seleznov.nope.player.playback;
 
+import android.app.Notification;
 import android.app.PendingIntent;
-import android.app.Service;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -23,18 +28,26 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.FileDataSource;
 
+import java.io.File;
+
 import javax.inject.Inject;
 
 import dagger.android.DaggerService;
 import seleznov.nope.player.DaggerActivity;
+import seleznov.nope.player.R;
+import seleznov.nope.player.helper.MediaStyleHelper;
 import seleznov.nope.player.model.TrackListManager;
 import seleznov.nope.player.model.dto.Track;
+
+import static android.support.v4.media.app.NotificationCompat.MediaStyle;
 
 /**
  * Created by User on 25.05.2018.
  */
 
 public class PlaybackService extends DaggerService {
+
+    private static final int NOTIFICATION_ID = 1;
 
     @Inject
     SimpleExoPlayer mExoPlayer;
@@ -108,12 +121,84 @@ public class PlaybackService extends DaggerService {
         mSession.release();
     }
 
-     MediaSessionCompat.Callback mediaSessionCallback = new MediaSessionCompat.Callback() {
+    private void refreshNotification(int state){
+        switch (state) {
+            case PlaybackStateCompat.STATE_PLAYING: {
+                startForeground(NOTIFICATION_ID, buildNotification(state));
+                break;
+            }
+            case PlaybackStateCompat.STATE_PAUSED: {
+                NotificationManagerCompat.from(PlaybackService.this)
+                        .notify(NOTIFICATION_ID, buildNotification(state));
+                stopForeground(false);
+                break;
+            }
+            default: {
+                stopForeground(true);
+                break;
+            }
+        }
+    }
+
+    private Notification buildNotification(int state){
+
+        NotificationCompat.Builder builder = MediaStyleHelper.from(this, mSession);
+
+        builder.addAction(
+                new NotificationCompat.Action(
+                        android.R.drawable.ic_media_previous, getString(R.string.previous),
+                        MediaButtonReceiver.buildMediaButtonPendingIntent(
+                                this,
+                                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)));
+
+        if (state == PlaybackStateCompat.STATE_PLAYING)
+            builder.addAction(
+                    new NotificationCompat.Action(
+                            android.R.drawable.ic_media_pause, getString(R.string.pause),
+                            MediaButtonReceiver.buildMediaButtonPendingIntent(
+                                    this,
+                                    PlaybackStateCompat.ACTION_PLAY_PAUSE)));
+        else
+            builder.addAction(
+                    new NotificationCompat.Action(
+                            android.R.drawable.ic_media_play, getString(R.string.play),
+                            MediaButtonReceiver.buildMediaButtonPendingIntent(
+                                    this,
+                                    PlaybackStateCompat.ACTION_PLAY_PAUSE)));
+        builder.addAction(
+                new NotificationCompat.Action(android.R.drawable.ic_media_next, getString(R.string.next),
+                        MediaButtonReceiver.buildMediaButtonPendingIntent(
+                                this,
+                                PlaybackStateCompat.ACTION_SKIP_TO_NEXT)));
+
+        builder.setStyle(new MediaStyle()
+                .setShowActionsInCompactView(1)
+                .setShowCancelButton(true)
+                .setCancelButtonIntent(
+                        MediaButtonReceiver.buildMediaButtonPendingIntent(
+                                this,
+                                PlaybackStateCompat.ACTION_STOP))
+                .setMediaSession(mSession.getSessionToken()));
+
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setColor(ContextCompat.getColor(this,
+                R.color.colorPrimaryDark));
+        builder.setShowWhen(false);
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setOnlyAlertOnce(true);
+
+        return builder.build();
+    }
+
+     private MediaSessionCompat.Callback mediaSessionCallback = new MediaSessionCompat.Callback() {
 
         @Override
         public void onPlay() {
+            startService(PlaybackService.newIntent(getApplicationContext()));
+
             Track track = mTrackListManager.getTrack();
             setMeta(track);
+            prepareFromExternal(Uri.parse(track.getUri()));
 
             int audioFocusResult = mAudioManager.requestAudioFocus(
                     mAudioFocusChangeListener,
@@ -124,12 +209,13 @@ public class PlaybackService extends DaggerService {
 
             mSession.setActive(true);
 
+            mExoPlayer.setPlayWhenReady(true);
+
             mSession.setPlaybackState(
                     mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
                             PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
 
-            prepareFromExternal(track.getUri());
-            mExoPlayer.setPlayWhenReady(true);
+            refreshNotification(PlaybackStateCompat.STATE_PLAYING);
 
         }
 
@@ -141,6 +227,8 @@ public class PlaybackService extends DaggerService {
             mSession.setPlaybackState(
                     mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
                             PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
+
+            refreshNotification(PlaybackStateCompat.STATE_PAUSED);
         }
 
         @Override
@@ -155,10 +243,11 @@ public class PlaybackService extends DaggerService {
             mSession.setPlaybackState(
                     mStateBuilder.setState(PlaybackStateCompat.STATE_STOPPED,
                             PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
+
+            refreshNotification(PlaybackStateCompat.STATE_STOPPED);
         }
 
-        private void prepareFromExternal(String stringUri){
-            Uri uri = Uri.parse(stringUri);//"file:///"+
+        private void prepareFromExternal(Uri uri){
 
             DataSpec dataSpec = new DataSpec(uri);
             final FileDataSource fileDataSource = new FileDataSource();
@@ -183,7 +272,7 @@ public class PlaybackService extends DaggerService {
 
         private void setMeta(Track track){
             MediaMetadataCompat metadata = mMetadataBuilder
-                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, track.getId())
+                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, track.getId().toString())
                     .putString(MediaMetadataCompat.METADATA_KEY_TITLE, track.getTitle())
                     .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, track.getAlbum())
                     .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, track.getArtist())

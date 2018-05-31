@@ -3,4 +3,8 @@
     <string name="tab1">Playlist</string>
     <string name="tab2">SoundCloud</string>
     <string name="tab3">Settings</string>
+    <string name="previous">Previous</string>
+    <string name="pause">Pause</string>
+    <string name="play">Play</string>
+    <string name="next">Next</string>
 </resources>
