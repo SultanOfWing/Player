@@ -9,12 +9,16 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
@@ -31,6 +35,8 @@ import seleznov.nope.player.playback.PlaybackService;
 
 public class ControllerFragment extends DaggerFragment {
 
+    @BindView(R.id.image_controller)
+    ImageView albumImg;
     @BindView(R.id.button_play_pause)
     ImageButton playStopButton;
 
@@ -52,6 +58,7 @@ public class ControllerFragment extends DaggerFragment {
         Intent intent = PlaybackService.newIntent(getContext());
         getActivity().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
 
+        albumImg.setImageResource(R.drawable.placeholder);
         playStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,12 +95,23 @@ public class ControllerFragment extends DaggerFragment {
     }
 
     private MediaControllerCompat.Callback mCallback = new MediaControllerCompat.Callback() {
+
+        @Override
+        public void onMetadataChanged(MediaMetadataCompat metadata) {
+           String albumArtUri = metadata.getString(
+                   MediaMetadataCompat.METADATA_KEY_ART_URI);
+
+            Picasso.with(getContext())
+                    .load(albumArtUri)
+                    .placeholder(R.drawable.placeholder)
+                    .into(albumImg);
+        }
+
         @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
             if (state == null)
                 return;
 
-            //not protected from turning
             isPlaying = state.getState() == PlaybackStateCompat.STATE_PLAYING;
             if(isPlaying){
                 playStopButton.setImageResource(R.drawable.ic_pause);

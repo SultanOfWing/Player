@@ -2,14 +2,14 @@ package seleznov.nope.player.playback;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.ContentUris;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -28,7 +28,6 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.FileDataSource;
 
-import java.io.File;
 
 import javax.inject.Inject;
 
@@ -73,9 +72,7 @@ public class PlaybackService extends DaggerService {
     public void onCreate() {
         super.onCreate();
         Context context = getApplicationContext();
-      //  mSession = new MediaSessionCompat(context,
-        //        this.getClass().getSimpleName());
-        Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON, null, //todo
+        Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON, null,
                 context, MediaButtonReceiver.class);
         mSession.setMediaButtonReceiver(PendingIntent.getBroadcast(context,
                 0, mediaButtonIntent, 0));
@@ -192,6 +189,8 @@ public class PlaybackService extends DaggerService {
 
      private MediaSessionCompat.Callback mediaSessionCallback = new MediaSessionCompat.Callback() {
 
+        private int state = PlaybackStateCompat.STATE_STOPPED;
+
         @Override
         public void onPlay() {
             startService(PlaybackService.newIntent(getApplicationContext()));
@@ -209,13 +208,16 @@ public class PlaybackService extends DaggerService {
 
             mSession.setActive(true);
 
+            registerReceiver(mBecomingNoiseRec, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
+
             mExoPlayer.setPlayWhenReady(true);
 
             mSession.setPlaybackState(
                     mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
                             PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
 
-            refreshNotification(PlaybackStateCompat.STATE_PLAYING);
+            state = PlaybackStateCompat.STATE_PLAYING;
+            refreshNotification(state);
 
         }
 
@@ -228,7 +230,8 @@ public class PlaybackService extends DaggerService {
                     mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
                             PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
 
-            refreshNotification(PlaybackStateCompat.STATE_PAUSED);
+            state = PlaybackStateCompat.STATE_PAUSED;
+            refreshNotification(state);
         }
 
         @Override
@@ -244,8 +247,31 @@ public class PlaybackService extends DaggerService {
                     mStateBuilder.setState(PlaybackStateCompat.STATE_STOPPED,
                             PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
 
-            refreshNotification(PlaybackStateCompat.STATE_STOPPED);
+            state = PlaybackStateCompat.STATE_STOPPED;
+            refreshNotification(state);
+
+            stopSelf();
         }
+
+         @Override
+         public void onSkipToNext() {
+             Track track = mTrackListManager.getNext();
+             setMeta(track);
+
+             refreshNotification(state);
+
+             prepareFromExternal(Uri.parse(track.getUri()));
+         }
+
+         @Override
+         public void onSkipToPrevious() {
+             Track track =  mTrackListManager.getPrevious();
+             setMeta(track);
+
+             refreshNotification(state);
+
+             prepareFromExternal(Uri.parse(track.getUri()));
+         }
 
         private void prepareFromExternal(Uri uri){
 
@@ -276,7 +302,6 @@ public class PlaybackService extends DaggerService {
                     .putString(MediaMetadataCompat.METADATA_KEY_TITLE, track.getTitle())
                     .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, track.getAlbum())
                     .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, track.getArtist())
-              //      .putBitmap(MediaMetadataCompat.METADATA_KEY_ART, track.getAlbumArtBitmap())
                     .putString(MediaMetadataCompat.METADATA_KEY_ART_URI, track.getAlbumArt())
                     .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, track.getUri())
                     .build();
@@ -302,6 +327,15 @@ public class PlaybackService extends DaggerService {
                     break;
             }
 
+        }
+    };
+
+    private BroadcastReceiver mBecomingNoiseRec = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
+                mediaSessionCallback.onPause();
+            }
         }
     };
 
