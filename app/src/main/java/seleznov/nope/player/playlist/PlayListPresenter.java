@@ -52,13 +52,7 @@ public class PlayListPresenter implements PlayListContract.Presenter {
                         albumArtUri = albumAptCursor.getString(
                                 albumAptCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
                         currTrack.setAlbumArt(albumArtUri);
-                       // Uri uri = Uri.parse(albumArtUri);
-                      //  Bitmap bitmap = MediaStore.Images.Media.getBitmap(mAppContext.getContentResolver(),
-                      //          uri);
-                     //   currTrack.setAlbumArtBitmap(bitmap);
                     }
-          //      }catch (IOException e){
-            //        e.printStackTrace();
                 }
                 finally {
                     albumAptCursor.close();

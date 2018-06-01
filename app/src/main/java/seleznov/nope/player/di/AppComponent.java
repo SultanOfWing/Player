@@ -10,6 +10,7 @@ import dagger.Component;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 import seleznov.nope.player.App;
+import seleznov.nope.player.eventbus.EventBusModule;
 import seleznov.nope.player.model.ModelModule;
 import seleznov.nope.player.playback.PlaybackModule;
 
@@ -18,7 +19,8 @@ import seleznov.nope.player.playback.PlaybackModule;
  */
 
 @Singleton
-@Component(modules = {ModelModule.class,
+@Component(modules = {EventBusModule.class,
+        ModelModule.class,
         ApplicationModule.class,
         ComponentBindingModule.class,
         AndroidSupportInjectionModule.class})

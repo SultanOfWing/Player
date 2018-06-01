@@ -18,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerFragment;
 import seleznov.nope.player.R;
-import seleznov.nope.player.adapter.AdapterAbs;
+import seleznov.nope.player.eventbus.RxEventBus;
 import seleznov.nope.player.helper.PermissionInspector;
 import seleznov.nope.player.model.TrackListManager;
 import seleznov.nope.player.model.dto.Track;
@@ -28,6 +28,8 @@ import seleznov.nope.player.model.dto.Track;
  */
 
 public class PlayListFragment extends DaggerFragment implements PlayListContract.View {
+
+
 
     private static final String[] STORAGE_PERMISSIONS = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -41,6 +43,8 @@ public class PlayListFragment extends DaggerFragment implements PlayListContract
     PlayListAdapter mPlayListAdapter;
     @Inject
     TrackListManager mTrackListManager;
+    @Inject
+    RxEventBus mEventBus;
 
     @BindView(R.id.track_recycler_view)
     RecyclerView recyclerView;
@@ -64,12 +68,7 @@ public class PlayListFragment extends DaggerFragment implements PlayListContract
         recyclerView.setAdapter(mPlayListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mPlayListAdapter.setOnItemClickListener(new AdapterAbs.OnItemClickListener() {
-            @Override
-            public void onClick(Object feed) {
-
-            }
-        });
+        mPlayListAdapter.setOnItemClickListener((item, pos) -> mEventBus.publish(pos));
 
         return view;
     }

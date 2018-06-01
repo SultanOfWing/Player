@@ -30,7 +30,7 @@ public abstract class AdapterAbs<T, V extends ViewHolderAbs<T>> extends Recycler
     public void onBindViewHolder(@NonNull V holder, int position) {
         T item = mList.get(position);
         holder.bindItem(item);
-        holder.click(item, mListener);
+        holder.click(item, position, mListener);
 
     }
 
@@ -40,7 +40,7 @@ public abstract class AdapterAbs<T, V extends ViewHolderAbs<T>> extends Recycler
     }
 
     public interface OnItemClickListener<T> {
-        void onClick(T feed);
+        void onClick(T item, int pos);
     }
 
 }

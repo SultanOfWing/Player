@@ -43,17 +43,12 @@ public class TrackListManager {
         mTrackList.addAll(trackList);
     }
 
-    public void setCurrentPos(int current) {
-        mCurrent = current;
+    public void setTrack(int pos) {
+        mCurrent = pos;
     }
 
     public Track getTrack() {
         return mTrackList.get(mCurrent);
-    }
-
-    public Track getTrack(int current){
-        setCurrentPos(current);
-        return getTrack();
     }
 
     public void setTrackList(List<Track> trackList){

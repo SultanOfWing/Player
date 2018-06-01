@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
+import android.support.v4.media.session.MediaControllerCompat.TransportControls;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.support.DaggerFragment;
 import seleznov.nope.player.R;
+import seleznov.nope.player.eventbus.RxEventBus;
+import seleznov.nope.player.model.TrackListManager;
+import seleznov.nope.player.model.dto.Track;
 import seleznov.nope.player.playback.PlaybackService;
 
 /**
@@ -39,6 +43,11 @@ public class ControllerFragment extends DaggerFragment {
     ImageView albumImg;
     @BindView(R.id.button_play_pause)
     ImageButton playStopButton;
+
+    @Inject
+    RxEventBus mEventBus;
+    @Inject
+    TrackListManager mListManager;
 
     private MediaControllerCompat mControllerCompat;
     private PlaybackService.PlaybackServiceBinder mServiceBinder;
@@ -59,21 +68,29 @@ public class ControllerFragment extends DaggerFragment {
         getActivity().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
 
         albumImg.setImageResource(R.drawable.placeholder);
-        playStopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mControllerCompat == null)
-                    return;
 
-                MediaControllerCompat.TransportControls transportControls =
-                        mControllerCompat.getTransportControls();
-                if(!isPlaying){
-                    transportControls.play();
-                }else {
-                    transportControls.pause();
-                }
+        playStopButton.setOnClickListener(view1 -> {
+            if(mControllerCompat == null)
+                return;
+
+            TransportControls transportControls =
+                    mControllerCompat.getTransportControls();
+            if(!isPlaying){
+                transportControls.play();
+            }else {
+                transportControls.pause();
             }
         });
+
+        mEventBus.subscribe((message) -> {
+            if (message instanceof Integer) {
+                Integer position = (Integer) message;
+                mListManager.setTrack(position);
+                TransportControls transportControls =
+                        mControllerCompat.getTransportControls();
+                transportControls.play();
+               }
+            });
 
         return view;
     }

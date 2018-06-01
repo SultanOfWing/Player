@@ -283,12 +283,7 @@ public class PlaybackService extends DaggerService {
                 e.printStackTrace();
             }
 
-            DataSource.Factory factory = new DataSource.Factory() {
-                @Override
-                public DataSource createDataSource() {
-                    return fileDataSource;
-                }
-            };
+            DataSource.Factory factory = () -> fileDataSource;
             MediaSource audioSource = new ExtractorMediaSource(fileDataSource.getUri(),
                     factory, new DefaultExtractorsFactory(), null, null);
 
@@ -312,23 +307,20 @@ public class PlaybackService extends DaggerService {
     };
 
     private AudioManager.OnAudioFocusChangeListener mAudioFocusChangeListener =
-            new AudioManager.OnAudioFocusChangeListener() {
-        @Override
-        public void onAudioFocusChange(int i) {
-            switch (i) {
-                case AudioManager.AUDIOFOCUS_GAIN:
-                    mediaSessionCallback.onPlay();
-                    break;
-                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                    mediaSessionCallback.onPause();
-                    break;
-                default:
-                    mediaSessionCallback.onPause();
-                    break;
-            }
+            i -> {
+                switch (i) {
+                    case AudioManager.AUDIOFOCUS_GAIN:
+                        mediaSessionCallback.onPlay();
+                        break;
+                    case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                        mediaSessionCallback.onPause();
+                        break;
+                    default:
+                        mediaSessionCallback.onPause();
+                        break;
+                }
 
-        }
-    };
+            };
 
     private BroadcastReceiver mBecomingNoiseRec = new BroadcastReceiver() {
         @Override

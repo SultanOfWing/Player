@@ -13,15 +13,10 @@ public abstract class ViewHolderAbs<T> extends RecyclerView.ViewHolder {
         super(itemView);
     }
 
-    public void click(final T item, final AdapterAbs.OnItemClickListener listener) {
+    public void click(final T item, int pos,  final AdapterAbs.OnItemClickListener listener) {
         if(listener == null) return;
 
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClick(item);
-            }
-        });
+        itemView.setOnClickListener(v -> listener.onClick(item, pos));
     }
 
     public abstract void bindItem(T item);
