@@ -12,4 +12,12 @@
         <item name="android:background">@color/colorAccent</item>
     </style>
 
+    <style name="TabLayoutTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+
 </resources>
