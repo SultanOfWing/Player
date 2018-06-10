@@ -197,7 +197,8 @@ public class PlaybackService extends DaggerService {
 
             Track track = mTrackListManager.getTrack();
             setMeta(track);
-            prepareFromExternal(Uri.parse(track.getUri()));
+            String s = track.getUri();
+            prepareFromExternal(Uri.parse(s));
 
             int audioFocusResult = mAudioManager.requestAudioFocus(
                     mAudioFocusChangeListener,
@@ -212,9 +213,11 @@ public class PlaybackService extends DaggerService {
 
             mExoPlayer.setPlayWhenReady(true);
 
+            long pos = mExoPlayer.getCurrentPosition();
+            mExoPlayer.seekTo(pos);
             mSession.setPlaybackState(
                     mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
-                            PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
+                            pos, 1).build());
 
             state = PlaybackStateCompat.STATE_PLAYING;
             refreshNotification(state);
@@ -223,12 +226,16 @@ public class PlaybackService extends DaggerService {
 
         @Override
         public void onPause() {
-            super.onPause();
             mExoPlayer.setPlayWhenReady(false);
+            unregisterReceiver(mBecomingNoiseRec);
 
+
+            long pos  = mExoPlayer.getCurrentPosition();
+            mExoPlayer.seekTo(pos);
             mSession.setPlaybackState(
                     mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
-                            PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
+                            pos, 1).build());
+
 
             state = PlaybackStateCompat.STATE_PAUSED;
             refreshNotification(state);
@@ -236,8 +243,8 @@ public class PlaybackService extends DaggerService {
 
         @Override
         public void onStop() {
-            super.onStop();
             mExoPlayer.setPlayWhenReady(false);
+            unregisterReceiver(mBecomingNoiseRec);
 
             mAudioManager.abandonAudioFocus(mAudioFocusChangeListener);
 
@@ -254,10 +261,22 @@ public class PlaybackService extends DaggerService {
         }
 
          @Override
+         public void onSeekTo(long pos) {
+             mSession.setPlaybackState(
+                     mStateBuilder.setState(state,
+                             pos, 1).build());
+            mExoPlayer.seekTo(pos);
+         }
+
+         @Override
          public void onSkipToNext() {
              Track track = mTrackListManager.getNext();
              setMeta(track);
 
+             mExoPlayer.seekTo(0);
+             mSession.setPlaybackState(
+                     mStateBuilder.setState(state,
+                             PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
              refreshNotification(state);
 
              prepareFromExternal(Uri.parse(track.getUri()));
@@ -268,13 +287,16 @@ public class PlaybackService extends DaggerService {
              Track track =  mTrackListManager.getPrevious();
              setMeta(track);
 
+             mExoPlayer.seekTo(0);
+             mSession.setPlaybackState(
+                     mStateBuilder.setState(state,
+                             PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
              refreshNotification(state);
 
              prepareFromExternal(Uri.parse(track.getUri()));
          }
 
         private void prepareFromExternal(Uri uri){
-
             DataSpec dataSpec = new DataSpec(uri);
             final FileDataSource fileDataSource = new FileDataSource();
             try {
@@ -297,6 +319,7 @@ public class PlaybackService extends DaggerService {
                     .putString(MediaMetadataCompat.METADATA_KEY_TITLE, track.getTitle())
                     .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, track.getAlbum())
                     .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, track.getArtist())
+                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, track.getDuration())
                     .putString(MediaMetadataCompat.METADATA_KEY_ART_URI, track.getAlbumArt())
                     .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, track.getUri())
                     .build();

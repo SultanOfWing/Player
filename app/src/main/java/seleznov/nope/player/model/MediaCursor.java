@@ -22,10 +22,12 @@ public class MediaCursor extends CursorWrapper {
         String title = getString(getColumnIndex(MediaStore.Audio.Media.TITLE));
         String artist = getString(getColumnIndex(MediaStore.Audio.Media.ARTIST));
         String album = getString(getColumnIndex(MediaStore.Audio.Media.ALBUM));
+        Long duration = getLong(getColumnIndex(MediaStore.Audio.Media.DURATION));
         String albumId = getString(getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
         String data = getString(getColumnIndex(MediaStore.Audio.Media.DATA));
 
-        return new Track(id, title, artist, album, albumId, data);
+        return new Track(id, title, artist, album,
+                duration,  albumId, data);
     }
 
 

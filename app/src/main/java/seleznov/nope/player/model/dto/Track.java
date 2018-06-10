@@ -14,16 +14,21 @@ public class Track implements Serializable {
     private String mTitle;
     private String mArtist;
     private String mAlbum;
+
+
+
+    private Long mDuration;
     private String mAlbumId;
     private String mAlbumArt;
-    private Bitmap mAlbumArtBitmap;
     private String mUri;
 
-    public Track(Long id, String title, String artist, String album, String albumId, String uri){
+    public Track(Long id, String title, String artist, String album,
+                 Long duration, String albumId, String uri){
         mId = id;
         mTitle = title;
         mArtist = artist;
         mAlbum = album;
+        mDuration = duration;
         mAlbumId = albumId;
         mUri = uri;
     }
@@ -60,6 +65,14 @@ public class Track implements Serializable {
         mAlbum = album;
     }
 
+    public Long getDuration() {
+        return mDuration;
+    }
+
+    public void setDuration(Long duration) {
+        mDuration = duration;
+    }
+
     public String getAlbumId() {
         return mAlbumId;
     }
@@ -74,14 +87,6 @@ public class Track implements Serializable {
 
     public void setAlbumArt(String albumArt) {
         mAlbumArt = albumArt;
-    }
-
-    public Bitmap getAlbumArtBitmap() {
-        return mAlbumArtBitmap;
-    }
-
-    public void setAlbumArtBitmap(Bitmap albumArtBitmap) {
-        mAlbumArtBitmap = albumArtBitmap;
     }
 
     public String getUri() {
