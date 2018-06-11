@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -14,7 +15,7 @@ import javax.inject.Inject;
 
 public abstract class AdapterAbs<T, V extends ViewHolderAbs<T>> extends RecyclerView.Adapter<V> {
 
-    protected List<T> mList;
+    protected List<T> mList = new ArrayList<>();
     private OnItemClickListener mListener;
 
 
@@ -36,7 +37,7 @@ public abstract class AdapterAbs<T, V extends ViewHolderAbs<T>> extends Recycler
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        return  mList.size();
     }
 
     public interface OnItemClickListener<T> {
