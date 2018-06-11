@@ -18,6 +18,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -45,6 +46,8 @@ import static android.support.v4.media.app.NotificationCompat.MediaStyle;
  */
 
 public class PlaybackService extends DaggerService {
+
+    private static final String TAG = "PlaybackService";
 
     private static final int NOTIFICATION_ID = 1;
 
@@ -227,7 +230,13 @@ public class PlaybackService extends DaggerService {
         @Override
         public void onPause() {
             mExoPlayer.setPlayWhenReady(false);
-            unregisterReceiver(mBecomingNoiseRec);
+            try{
+                unregisterReceiver(mBecomingNoiseRec);
+            }catch (IllegalArgumentException e){
+                Log.w(TAG, "attempt to unregister an " +
+                        "unregistered receiver");
+            }
+
 
 
             long pos  = mExoPlayer.getCurrentPosition();
@@ -244,7 +253,12 @@ public class PlaybackService extends DaggerService {
         @Override
         public void onStop() {
             mExoPlayer.setPlayWhenReady(false);
-            unregisterReceiver(mBecomingNoiseRec);
+            try{
+                unregisterReceiver(mBecomingNoiseRec);
+            }catch (IllegalArgumentException e){
+                Log.w(TAG, "attempt to unregister an " +
+                        "unregistered receiver");
+            }
 
             mAudioManager.abandonAudioFocus(mAudioFocusChangeListener);
 
