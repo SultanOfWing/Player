@@ -39,6 +39,7 @@ import butterknife.OnClick;
 import dagger.android.support.DaggerFragment;
 import seleznov.nope.player.R;
 import seleznov.nope.player.eventbus.RxEventBus;
+import seleznov.nope.player.helper.SeekPref;
 import seleznov.nope.player.model.TrackListManager;
 import seleznov.nope.player.playback.PlaybackService;
 
@@ -61,6 +62,8 @@ public class ControllerFragment extends DaggerFragment {
     TrackListManager mListManager;
     @Inject
     Handler mHandler;
+    @Inject
+    Context mAppContext;
 
     private static final long UPDATE_INTERNAL = 1000;
     private static final long INITIAL_INTERVAL = 100;
@@ -72,7 +75,6 @@ public class ControllerFragment extends DaggerFragment {
     private PlaybackStateCompat mPlaybackState;
     private ScheduledFuture<?> mScheduleFuture;
     private boolean mIsPlaying;
-    private int mTrackDur;
 
     private final Runnable mUpdateTask = this::updateSeek;
     private final ScheduledExecutorService mScheduledExecutorService =
@@ -91,11 +93,12 @@ public class ControllerFragment extends DaggerFragment {
         ButterKnife.bind(this, view);
         Intent intent = PlaybackService.newIntent(getContext());
         getActivity().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
-        if(savedInstanceState != null){
-            mTrackDur = savedInstanceState.getInt(DURATION_KEY, 0);
-            seekBar.setMax(mTrackDur);
+        int dur = SeekPref.getLastTrackDur(mAppContext);
+        if(dur != 0){
+            seekBar.setMax(dur);
         }
         albumImg.setImageResource(R.drawable.placeholder);
+
 
         playStopButton.setOnClickListener(view1 -> {
             if(mControllerCompat == null)
@@ -159,11 +162,6 @@ public class ControllerFragment extends DaggerFragment {
         mScheduledExecutorService.shutdown();
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(DURATION_KEY, mTrackDur);
-    }
 
     @OnClick(R.id.button_forward)
     public void onClickButtonForward(){
@@ -192,7 +190,6 @@ public class ControllerFragment extends DaggerFragment {
         }
         Log.i(TAG, String.valueOf(currPos));
         seekBar.setProgress((int) currPos);
-
     }
 
     private void updateState(PlaybackStateCompat state){
@@ -211,6 +208,7 @@ public class ControllerFragment extends DaggerFragment {
 
     private void startUpdateSeek(){
         stopUpdateSeek();
+
         if (!mScheduledExecutorService.isShutdown()) {
             mScheduleFuture = mScheduledExecutorService.scheduleAtFixedRate(
                     () -> mHandler.post(mUpdateTask), INITIAL_INTERVAL,
@@ -230,9 +228,11 @@ public class ControllerFragment extends DaggerFragment {
         public void onMetadataChanged(MediaMetadataCompat metadata) {
            String albumArtUri = metadata.getString(
                    MediaMetadataCompat.METADATA_KEY_ART_URI);
-           mTrackDur =(int) metadata.getLong(
+           int dur =(int) metadata.getLong(
                    MediaMetadataCompat.METADATA_KEY_DURATION);
-           seekBar.setMax(mTrackDur);
+           SeekPref.setLastTrackDur(mAppContext, dur);
+           seekBar.setMax(dur);
+
 
             Picasso.with(getContext())
                     .load(albumArtUri)
@@ -261,6 +261,8 @@ public class ControllerFragment extends DaggerFragment {
                 mControllerCompat = null;
             }
 
+
+
         }
 
         @Override
@@ -272,6 +274,5 @@ public class ControllerFragment extends DaggerFragment {
             }
         }
     };
-
 }
 
