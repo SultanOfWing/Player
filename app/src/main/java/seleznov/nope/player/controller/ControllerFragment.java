@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
 import com.squareup.picasso.Picasso;
@@ -68,7 +67,6 @@ public class ControllerFragment extends DaggerFragment {
     private static final long UPDATE_INTERNAL = 1000;
     private static final long INITIAL_INTERVAL = 100;
     private static final String TAG = "ControllerFragment";
-    private static final String DURATION_KEY = "trackDuration";
 
     private MediaControllerCompat mControllerCompat;
     private PlaybackService.PlaybackServiceBinder mServiceBinder;

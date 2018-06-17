@@ -56,4 +56,6 @@ dependencies {
     //other
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.google.android.exoplayer:exoplayer:r2.4.0'
+
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
 }
