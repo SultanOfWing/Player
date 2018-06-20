@@ -4,6 +4,7 @@ import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -68,7 +69,12 @@ public class PlayListFragment extends DaggerFragment implements PlayListContract
         recyclerView.setAdapter(mPlayListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mPlayListAdapter.setOnItemClickListener((item, pos) -> mEventBus.publish(pos));
+        DividerItemDecoration dID = new DividerItemDecoration(recyclerView.getContext(),
+                DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dID);
+
+        mPlayListAdapter.setOnItemClickListener((item, pos)
+                -> mEventBus.publish(pos));
 
         return view;
     }

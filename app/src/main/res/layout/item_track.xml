@@ -1,72 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.v7.widget.CardView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="4dp"
-    app:cardUseCompatPadding="true">
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:orientation="horizontal"
+    android:foreground="?android:attr/selectableItemBackground">
 
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/image_album"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:paddingStart="10dp"
+         />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground">
+        android:layout_weight="6"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical"
+        >
 
-        <ImageView
-            android:id="@+id/image_album"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="14dp"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/track_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            tools:text="Track_title" />
 
+        <TextView
+            android:id="@+id/track_artist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            tools:text="Artist_name" />
+    </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="275dp"
-            android:layout_height="76dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="4dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:id="@+id/track_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:scrollHorizontally="true"
-                app:layout_constraintStart_toEndOf="@+id/image_album"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Track_title" />
-
-            <TextView
-                android:id="@+id/track_artist"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:scrollHorizontally="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/image_album"
-                tools:text="Artist_name" />
-        </LinearLayout>
-
-
-    </android.support.constraint.ConstraintLayout>
-
-</android.support.v7.widget.CardView>
+</LinearLayout>

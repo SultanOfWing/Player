@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/fragment_controller"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -64,11 +69,20 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/image_controller"
+            android:id="@+id/image_album"
             android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/big_image_album"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2.7"/>
+
+</LinearLayout>
 
 

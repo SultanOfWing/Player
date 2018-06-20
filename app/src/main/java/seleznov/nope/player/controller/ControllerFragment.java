@@ -48,8 +48,10 @@ import seleznov.nope.player.playback.PlaybackService;
 
 public class ControllerFragment extends DaggerFragment {
 
-    @BindView(R.id.image_controller)
+    @BindView(R.id.image_album)
     ImageView albumImg;
+    @BindView(R.id.big_image_album)
+    ImageView bigAlbumImg;
     @BindView(R.id.button_play_pause)
     ImageButton playStopButton;
     @BindView(R.id.audio_progress)
@@ -95,7 +97,8 @@ public class ControllerFragment extends DaggerFragment {
         if(dur != 0){
             seekBar.setMax(dur);
         }
-        albumImg.setImageResource(R.drawable.placeholder);
+        albumImg.setImageResource(R.drawable.alt_placeholder);
+        bigAlbumImg.setImageResource(R.drawable.alt_placeholder);
 
 
         playStopButton.setOnClickListener(view1 -> {
@@ -234,7 +237,7 @@ public class ControllerFragment extends DaggerFragment {
 
             Picasso.with(getContext())
                     .load(albumArtUri)
-                    .placeholder(R.drawable.placeholder)
+                    .placeholder(R.drawable.alt_placeholder)
                     .into(albumImg);
         }
 
