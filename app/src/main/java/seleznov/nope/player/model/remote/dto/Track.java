@@ -1,9 +1,10 @@
-package seleznov.nope.player.model.remote;
+package seleznov.nope.player.model.remote.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+
 
 /**
  * Created by User on 21.06.2018.

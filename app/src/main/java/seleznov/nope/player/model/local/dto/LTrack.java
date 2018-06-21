@@ -12,9 +12,6 @@ public class LTrack implements Serializable {
     private String mTitle;
     private String mArtist;
     private String mAlbum;
-
-
-
     private Long mDuration;
     private String mAlbumId;
     private String mAlbumArt;

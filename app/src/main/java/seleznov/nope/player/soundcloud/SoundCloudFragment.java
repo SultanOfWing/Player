@@ -22,6 +22,8 @@ import seleznov.nope.player.R;
 import seleznov.nope.player.eventbus.RxEventBus;
 import seleznov.nope.player.model.TrackListManager;
 import seleznov.nope.player.model.local.dto.LTrack;
+import seleznov.nope.player.model.remote.dto.Track;
+import seleznov.nope.player.model.remote.dto.Tracks;
 
 /**
  * Created by User on 19.05.2018.
@@ -64,9 +66,6 @@ public class SoundCloudFragment extends DaggerFragment implements SoundCloudCont
                 DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dID);
 
-        mCloudAdapter.setOnItemClickListener((item, pos)
-                -> mEventBus.publish(pos));
-
         return view;
     }
 
@@ -74,7 +73,7 @@ public class SoundCloudFragment extends DaggerFragment implements SoundCloudCont
     public void onResume() {
         super.onResume();
         mSoundCloudPresenter.takeView(this);
-        mSoundCloudPresenter.updateCloudList();
+        mSoundCloudPresenter.updateTopList();
     }
 
     @Override
@@ -84,9 +83,10 @@ public class SoundCloudFragment extends DaggerFragment implements SoundCloudCont
     }
 
     @Override
-    public void setCloudList(List<LTrack> LTrackList){
-        mCloudAdapter.setList(LTrackList);
-        mTrackListManager.setLTrackList(LTrackList);
+    public void setTopList(Tracks tracks){
+        List<Track> trackList = tracks.getTrack();
+        mCloudAdapter.setList(trackList);
+       // mTrackListManager.setLTrackList(trackList);
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 }

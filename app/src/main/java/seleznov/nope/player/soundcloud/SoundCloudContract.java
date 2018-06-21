@@ -5,6 +5,7 @@ import java.util.List;
 import seleznov.nope.player.IPresenter;
 import seleznov.nope.player.IView;
 import seleznov.nope.player.model.local.dto.LTrack;
+import seleznov.nope.player.model.remote.dto.Tracks;
 
 /**
  * Created by User on 20.05.2018.
@@ -13,10 +14,10 @@ import seleznov.nope.player.model.local.dto.LTrack;
 public interface SoundCloudContract {
 
     interface Presenter extends IPresenter<View>{
-        void updateCloudList();
+        void updateTopList();
     }
 
     interface View extends IView<Presenter>{
-        void setCloudList(List<LTrack> list);
+        void setTopList(Tracks tracks);
     }
 }

@@ -1,4 +1,4 @@
-package seleznov.nope.player.model.remote;
+package seleznov.nope.player.model.remote.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

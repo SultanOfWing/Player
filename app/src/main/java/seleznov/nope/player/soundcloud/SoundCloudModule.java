@@ -29,6 +29,4 @@ public abstract class SoundCloudModule {
         return new CloudAdapter();
     }
 
-
-
 }

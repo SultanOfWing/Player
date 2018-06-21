@@ -1,4 +1,4 @@
-package seleznov.nope.player.model.remote;
+package seleznov.nope.player.model.remote.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -7,13 +7,13 @@ import com.google.gson.annotations.SerializedName;
  * Created by User on 21.06.2018.
  */
 
-public class Streamable {
+public class Image {
     @SerializedName("#text")
     @Expose
     private String text;
-    @SerializedName("fulltrack")
+    @SerializedName("size")
     @Expose
-    private String fulltrack;
+    private String size;
 
     public String getText() {
         return text;
@@ -23,11 +23,11 @@ public class Streamable {
         this.text = text;
     }
 
-    public String getFulltrack() {
-        return fulltrack;
+    public String getSize() {
+        return size;
     }
 
-    public void setFulltrack(String fulltrack) {
-        this.fulltrack = fulltrack;
+    public void setSize(String size) {
+        this.size = size;
     }
 }

@@ -6,13 +6,18 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import seleznov.nope.player.model.local.dto.LTrack;
+import seleznov.nope.player.model.remote.LastFmApi;
 
 /**
  * Created by User on 25.05.2018.
  */
 @Module
 public class ModelModule {
+
+    private static final String BASE_URL = "http://ws.audioscrobbler.com/";
 
     @Singleton
     @Provides
@@ -25,5 +30,15 @@ public class ModelModule {
      TrackListManager getTrackListManager(){
         return new TrackListManager();
     }
+
+    @Singleton
+    @Provides
+    LastFmApi providesLastFmApi(){
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        return retrofit.create(LastFmApi.class);
+    }
+
 
 }
