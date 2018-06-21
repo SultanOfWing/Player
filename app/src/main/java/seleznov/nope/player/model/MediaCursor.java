@@ -2,7 +2,6 @@ package seleznov.nope.player.model;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
-import android.net.Uri;
 import android.provider.MediaStore;
 
 import seleznov.nope.player.model.dto.Track;

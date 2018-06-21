@@ -2,6 +2,7 @@ package seleznov.nope.player.soundcloud;
 
 import dagger.Binds;
 import dagger.Module;
+import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import seleznov.nope.player.di.ActivityScoped;
 import seleznov.nope.player.di.FragmentScoped;
@@ -21,6 +22,12 @@ public abstract class SoundCloudModule {
     @ActivityScoped
     @Binds
     abstract SoundCloudContract.Presenter soundCloudPresenter(SoundCloudPresenter presenter);
+
+    @Provides
+    @ActivityScoped
+    static CloudAdapter getCloudAdapter(){
+        return new CloudAdapter();
+    }
 
 
 
