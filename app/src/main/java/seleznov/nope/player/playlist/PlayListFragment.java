@@ -22,7 +22,7 @@ import seleznov.nope.player.R;
 import seleznov.nope.player.eventbus.RxEventBus;
 import seleznov.nope.player.helper.PermissionInspector;
 import seleznov.nope.player.model.TrackListManager;
-import seleznov.nope.player.model.dto.Track;
+import seleznov.nope.player.model.local.dto.LTrack;
 
 /**
  * Created by User on 19.05.2018.
@@ -93,9 +93,9 @@ public class PlayListFragment extends DaggerFragment implements PlayListContract
     }
 
     @Override
-    public void setPlayList(List<Track> trackList){
-        mPlayListAdapter.setList(trackList);
-        mTrackListManager.setTrackList(trackList);
+    public void setPlayList(List<LTrack> LTrackList){
+        mPlayListAdapter.setList(LTrackList);
+        mTrackListManager.setLTrackList(LTrackList);
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 

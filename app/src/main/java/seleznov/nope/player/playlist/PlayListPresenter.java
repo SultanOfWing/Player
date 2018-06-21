@@ -2,19 +2,16 @@ package seleznov.nope.player.playlist;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.provider.MediaStore;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
-import seleznov.nope.player.model.MediaCursor;
-import seleznov.nope.player.model.dto.Track;
+import seleznov.nope.player.model.local.MediaCursor;
+import seleznov.nope.player.model.local.dto.LTrack;
 import seleznov.nope.player.helper.MediaFinder;
 
 /**
@@ -35,23 +32,23 @@ public class PlayListPresenter implements PlayListContract.Presenter {
 
     @Override
     public void updatePlayList() {
-        List<Track> trackList = new ArrayList<>();
+        List<LTrack> LTrackList = new ArrayList<>();
         Cursor cursor = MediaFinder.getAllMedia(mAppContext);
         MediaCursor mediaCursor = new MediaCursor(cursor);
 
         try {
             mediaCursor.moveToFirst();
             while (!mediaCursor.isAfterLast()) {
-                Track currTrack =  mediaCursor.getTrack();
+                LTrack currLTrack =  mediaCursor.getTrack();
                 Cursor albumAptCursor = MediaFinder.getAlbumArt(mAppContext,
-                        currTrack.getAlbumId());
+                        currLTrack.getAlbumId());
 
                 String albumArtUri;
                 try{
                     if(albumAptCursor.moveToFirst()){
                         albumArtUri = albumAptCursor.getString(
                                 albumAptCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
-                        currTrack.setAlbumArt(albumArtUri);
+                        currLTrack.setAlbumArt(albumArtUri);
                     }
                 }
                 finally {
@@ -59,13 +56,13 @@ public class PlayListPresenter implements PlayListContract.Presenter {
                 }
 
 
-                trackList.add(currTrack);
+                LTrackList.add(currLTrack);
                 cursor.moveToNext();
             }
         } finally {
             cursor.close();
         }
-        mView.setPlayList(trackList);
+        mView.setPlayList(LTrackList);
     }
 
     @Override

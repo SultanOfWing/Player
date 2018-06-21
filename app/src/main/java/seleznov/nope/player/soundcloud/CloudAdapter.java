@@ -15,13 +15,13 @@ import butterknife.ButterKnife;
 import seleznov.nope.player.R;
 import seleznov.nope.player.adapter.AdapterAbs;
 import seleznov.nope.player.adapter.ViewHolderAbs;
-import seleznov.nope.player.model.dto.Track;
+import seleznov.nope.player.model.local.dto.LTrack;
 
 /**
  * Created by User on 20.06.2018.
  */
 
-public class CloudAdapter extends AdapterAbs<Track, CloudAdapter.CloudHolder> {
+public class CloudAdapter extends AdapterAbs<LTrack, CloudAdapter.CloudHolder> {
 
     @NonNull
     @Override
@@ -32,7 +32,7 @@ public class CloudAdapter extends AdapterAbs<Track, CloudAdapter.CloudHolder> {
         return new CloudHolder(view);
     }
 
-    public class CloudHolder extends ViewHolderAbs<Track>{
+    public class CloudHolder extends ViewHolderAbs<LTrack>{
 
         @BindView(R.id.image_album)
         ImageView albumImg;
@@ -50,7 +50,7 @@ public class CloudAdapter extends AdapterAbs<Track, CloudAdapter.CloudHolder> {
         }
 
         @Override
-        public void bindItem(Track item) {
+        public void bindItem(LTrack item) {
             Picasso.with(mContext)
                     .load(item.getAlbumArt())
                     .placeholder(R.drawable.soundcloud)

@@ -37,7 +37,7 @@ import seleznov.nope.player.DaggerActivity;
 import seleznov.nope.player.R;
 import seleznov.nope.player.helper.MediaStyleHelper;
 import seleznov.nope.player.model.TrackListManager;
-import seleznov.nope.player.model.dto.Track;
+import seleznov.nope.player.model.local.dto.LTrack;
 
 import static android.support.v4.media.app.NotificationCompat.MediaStyle;
 
@@ -198,9 +198,9 @@ public class PlaybackService extends DaggerService {
         public void onPlay() {
             startService(PlaybackService.newIntent(getApplicationContext()));
 
-            Track track = mTrackListManager.getTrack();
-            setMeta(track);
-            String s = track.getUri();
+            LTrack LTrack = mTrackListManager.getTrack();
+            setMeta(LTrack);
+            String s = LTrack.getUri();
             prepareFromExternal(Uri.parse(s));
 
             int audioFocusResult = mAudioManager.requestAudioFocus(
@@ -284,8 +284,8 @@ public class PlaybackService extends DaggerService {
 
          @Override
          public void onSkipToNext() {
-             Track track = mTrackListManager.getNext();
-             setMeta(track);
+             LTrack LTrack = mTrackListManager.getNext();
+             setMeta(LTrack);
 
              mExoPlayer.seekTo(0);
              mSession.setPlaybackState(
@@ -293,13 +293,13 @@ public class PlaybackService extends DaggerService {
                              PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
              refreshNotification(state);
 
-             prepareFromExternal(Uri.parse(track.getUri()));
+             prepareFromExternal(Uri.parse(LTrack.getUri()));
          }
 
          @Override
          public void onSkipToPrevious() {
-             Track track =  mTrackListManager.getPrevious();
-             setMeta(track);
+             LTrack LTrack =  mTrackListManager.getPrevious();
+             setMeta(LTrack);
 
              mExoPlayer.seekTo(0);
              mSession.setPlaybackState(
@@ -307,7 +307,7 @@ public class PlaybackService extends DaggerService {
                              PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
              refreshNotification(state);
 
-             prepareFromExternal(Uri.parse(track.getUri()));
+             prepareFromExternal(Uri.parse(LTrack.getUri()));
          }
 
         private void prepareFromExternal(Uri uri){
@@ -327,15 +327,15 @@ public class PlaybackService extends DaggerService {
             
         }
 
-        private void setMeta(Track track){
+        private void setMeta(LTrack LTrack){
             MediaMetadataCompat metadata = mMetadataBuilder
-                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, track.getId().toString())
-                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, track.getTitle())
-                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, track.getAlbum())
-                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, track.getArtist())
-                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, track.getDuration())
-                    .putString(MediaMetadataCompat.METADATA_KEY_ART_URI, track.getAlbumArt())
-                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, track.getUri())
+                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, LTrack.getId().toString())
+                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, LTrack.getTitle())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, LTrack.getAlbum())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, LTrack.getArtist())
+                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, LTrack.getDuration())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ART_URI, LTrack.getAlbumArt())
+                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, LTrack.getUri())
                     .build();
 
             mSession.setMetadata(metadata);

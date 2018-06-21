@@ -1,10 +1,10 @@
-package seleznov.nope.player.model;
+package seleznov.nope.player.model.local;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.provider.MediaStore;
 
-import seleznov.nope.player.model.dto.Track;
+import seleznov.nope.player.model.local.dto.LTrack;
 
 /**
  * Created by User on 22.05.2018.
@@ -16,7 +16,7 @@ public class MediaCursor extends CursorWrapper {
         super(cursor);
     }
 
-    public Track getTrack(){
+    public LTrack getTrack(){
         Long id = getLong(getColumnIndex(MediaStore.Audio.Media._ID));
         String title = getString(getColumnIndex(MediaStore.Audio.Media.TITLE));
         String artist = getString(getColumnIndex(MediaStore.Audio.Media.ARTIST));
@@ -25,7 +25,7 @@ public class MediaCursor extends CursorWrapper {
         String albumId = getString(getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
         String data = getString(getColumnIndex(MediaStore.Audio.Media.DATA));
 
-        return new Track(id, title, artist, album,
+        return new LTrack(id, title, artist, album,
                 duration,  albumId, data);
     }
 

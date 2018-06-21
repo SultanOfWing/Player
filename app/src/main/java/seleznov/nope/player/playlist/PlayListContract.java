@@ -4,8 +4,7 @@ import java.util.List;
 
 import seleznov.nope.player.IPresenter;
 import seleznov.nope.player.IView;
-import seleznov.nope.player.model.dto.Track;
-import seleznov.nope.player.soundcloud.SoundCloudContract;
+import seleznov.nope.player.model.local.dto.LTrack;
 
 /**
  * Created by User on 20.05.2018.
@@ -18,6 +17,6 @@ public interface PlayListContract {
     }
 
     interface View extends IView<PlayListContract.Presenter> {
-        void setPlayList(List<Track> list);
+        void setPlayList(List<LTrack> list);
     }
 }

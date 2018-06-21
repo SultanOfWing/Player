@@ -21,7 +21,7 @@ import dagger.android.support.DaggerFragment;
 import seleznov.nope.player.R;
 import seleznov.nope.player.eventbus.RxEventBus;
 import seleznov.nope.player.model.TrackListManager;
-import seleznov.nope.player.model.dto.Track;
+import seleznov.nope.player.model.local.dto.LTrack;
 
 /**
  * Created by User on 19.05.2018.
@@ -84,9 +84,9 @@ public class SoundCloudFragment extends DaggerFragment implements SoundCloudCont
     }
 
     @Override
-    public void setCloudList(List<Track> trackList){
-        mCloudAdapter.setList(trackList);
-        mTrackListManager.setTrackList(trackList);
+    public void setCloudList(List<LTrack> LTrackList){
+        mCloudAdapter.setList(LTrackList);
+        mTrackListManager.setLTrackList(LTrackList);
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 }

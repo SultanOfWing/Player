@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import seleznov.nope.player.model.dto.Track;
+import seleznov.nope.player.model.local.dto.LTrack;
 
 /**
  * Created by User on 25.05.2018.
@@ -13,12 +13,12 @@ import seleznov.nope.player.model.dto.Track;
 public class TrackListManager {
 
     @Inject
-    List<Track> mTrackList;
+    List<LTrack> mLTrackList;
 
     private int mCurrent;
 
-    public Track getNext() {
-        int maxIndex = mTrackList.size()-1;
+    public LTrack getNext() {
+        int maxIndex = mLTrackList.size()-1;
         if (mCurrent == maxIndex)
             mCurrent = 0;
         else
@@ -26,8 +26,8 @@ public class TrackListManager {
         return getTrack();
     }
 
-    public Track getPrevious() {
-        int maxIndex = mTrackList.size()-1;
+    public LTrack getPrevious() {
+        int maxIndex = mLTrackList.size()-1;
         if (mCurrent == 0)
             mCurrent = maxIndex;
         else
@@ -35,12 +35,12 @@ public class TrackListManager {
         return getTrack();
     }
 
-    public void add(Track track){
-        mTrackList.add(track);
+    public void add(LTrack LTrack){
+        mLTrackList.add(LTrack);
     }
 
-    public void addAll(List<Track> trackList){
-        mTrackList.addAll(trackList);
+    public void addAll(List<LTrack> LTrackList){
+        mLTrackList.addAll(LTrackList);
     }
 
     public void setPos(int pos) {
@@ -51,15 +51,15 @@ public class TrackListManager {
         return mCurrent;
     }
 
-    public Track getTrack() {
-        return mTrackList.get(mCurrent);
+    public LTrack getTrack() {
+        return mLTrackList.get(mCurrent);
     }
 
-    public void setTrackList(List<Track> trackList){
-        mTrackList = trackList;
+    public void setLTrackList(List<LTrack> LTrackList){
+        mLTrackList = LTrackList;
     }
 
-    public List<Track> getTrackList(){
-        return mTrackList;
+    public List<LTrack> getLTrackList(){
+        return mLTrackList;
     }
 }

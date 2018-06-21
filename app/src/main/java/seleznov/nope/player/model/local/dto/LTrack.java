@@ -1,6 +1,4 @@
-package seleznov.nope.player.model.dto;
-
-import android.graphics.Bitmap;
+package seleznov.nope.player.model.local.dto;
 
 import java.io.Serializable;
 
@@ -8,7 +6,7 @@ import java.io.Serializable;
  * Created by User on 22.05.2018.
  */
 
-public class Track implements Serializable {
+public class LTrack implements Serializable {
 
     private Long mId;
     private String mTitle;
@@ -22,8 +20,8 @@ public class Track implements Serializable {
     private String mAlbumArt;
     private String mUri;
 
-    public Track(Long id, String title, String artist, String album,
-                 Long duration, String albumId, String uri){
+    public LTrack(Long id, String title, String artist, String album,
+                  Long duration, String albumId, String uri){
         mId = id;
         mTitle = title;
         mArtist = artist;
