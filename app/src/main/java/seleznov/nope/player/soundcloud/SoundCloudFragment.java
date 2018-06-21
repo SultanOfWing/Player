@@ -6,10 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import java.util.List;
 
@@ -31,8 +31,8 @@ import seleznov.nope.player.model.remote.dto.Tracks;
 
 public class SoundCloudFragment extends DaggerFragment implements SoundCloudContract.View {
 
-    @BindView(R.id.search_view)
-    SearchView searchView;
+  //  @BindView(R.id.search_view)
+  //  SearchView searchView;
     @BindView(R.id.cloud_recycler_view)
     RecyclerView recyclerView;
 
@@ -73,7 +73,7 @@ public class SoundCloudFragment extends DaggerFragment implements SoundCloudCont
     public void onResume() {
         super.onResume();
         mSoundCloudPresenter.takeView(this);
-        mSoundCloudPresenter.updateTopList();
+       // mSoundCloudPresenter.updateTopList();
     }
 
     @Override

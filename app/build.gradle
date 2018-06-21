@@ -52,6 +52,7 @@ dependencies {
     //retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation "com.squareup.retrofit2:adapter-rxjava:2.3.0"
 
     //butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
