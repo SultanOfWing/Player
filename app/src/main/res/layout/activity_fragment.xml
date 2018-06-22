@@ -1,51 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    sothree:umanoPanelHeight="68dp"
+    sothree:umanoShadowHeight="4dp">
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout
-        android:id="@+id/sliding_layout"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        sothree:umanoPanelHeight="68dp"
-        sothree:umanoShadowHeight="4dp">
+        android:layout_height="match_parent">
 
-        <android.support.design.widget.CoordinatorLayout
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/appbar"
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/player"
+                app:layout_scrollFlags="scroll|snap"/>
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/player"
-                    app:layout_scrollFlags="scroll|snap"/>
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabTextAppearance="@style/TabLayoutTextStyle"/>
 
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabTextAppearance="@style/TabLayoutTextStyle"/>
+        </android.support.design.widget.AppBarLayout>
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewpager"
-                    android:layout_width="match_parent"
-                    android:layout_height="378dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/white" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-            </android.support.design.widget.AppBarLayout>
-        </android.support.design.widget.CoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
-       <FrameLayout
+        <FrameLayout
             android:id="@+id/controller_container"
             android:layout_width="match_parent"
             android:layout_height="450dp">
@@ -53,4 +51,3 @@
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
-</FrameLayout>

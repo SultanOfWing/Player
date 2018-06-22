@@ -30,8 +30,8 @@ import seleznov.nope.player.model.remote.dto.Tracks;
 
 public class LastFmFragment extends DaggerFragment implements LastFmContract.View {
 
-    @BindView(R.id.search_view)
-    SearchView searchView;
+  //  @BindView(R.id.search_view)
+  //  SearchView searchView;
     @BindView(R.id.cloud_recycler_view)
     RecyclerView recyclerView;
 
@@ -60,7 +60,6 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
 
         recyclerView.setAdapter(mLastFmAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         DividerItemDecoration dID = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dID);
