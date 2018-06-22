@@ -25,6 +25,7 @@ import android.widget.SeekBar;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -234,11 +235,20 @@ public class ControllerFragment extends DaggerFragment {
            SeekPref.setLastTrackDur(mAppContext, dur);
            seekBar.setMax(dur);
 
+            File file = null;
+            if(albumArtUri != null){
+                file = new File(albumArtUri);
+            }
 
             Picasso.with(getContext())
-                    .load(albumArtUri)
+                    .load(file)
                     .placeholder(R.drawable.alt_placeholder)
                     .into(albumImg);
+
+            Picasso.with(getContext())
+                    .load(file)
+                    .placeholder(R.drawable.alt_placeholder)
+                    .into(bigAlbumImg);
         }
 
         @Override

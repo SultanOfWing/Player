@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import seleznov.nope.player.R;
@@ -57,8 +59,14 @@ public class PlayListAdapter extends AdapterAbs<LocalTrack, PlayListAdapter.Play
             trackName.setText(item.getTitle());
             trackArtist.setText(item.getArtist());
 
+            File file = null;
+            String path = item.getAlbumArt();
+            if(path != null){
+                file = new File(path);
+            }
+
             Picasso.with(mContext)
-                    .load(item.getAlbumArt())
+                    .load(file)
                     .placeholder(R.drawable.placeholder)
                     .into(albumImg);
         }
