@@ -63,6 +63,7 @@ public class PlaybackService extends DaggerService {
     MediaSessionCompat mSession;
 
     private AudioManager mAudioManager;
+    private int mCurrent;
 
     public static Intent newIntent(Context context){
         return new Intent(context, PlaybackService.class);
@@ -216,7 +217,13 @@ public class PlaybackService extends DaggerService {
 
             mExoPlayer.setPlayWhenReady(true);
 
-            long pos = mExoPlayer.getCurrentPosition();
+            long pos;
+            if(mCurrent == mTrackListManager.getPos()){
+                 pos = mExoPlayer.getCurrentPosition();
+            }else {
+                pos = 0;
+                mCurrent = mTrackListManager.getPos();
+            }
             mExoPlayer.seekTo(pos);
             mSession.setPlaybackState(
                     mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
@@ -285,6 +292,7 @@ public class PlaybackService extends DaggerService {
          @Override
          public void onSkipToNext() {
              LocalTrack LocalTrack = mTrackListManager.getNext();
+             mCurrent = mTrackListManager.getPos();
              setMeta(LocalTrack);
 
              mExoPlayer.seekTo(0);
@@ -299,6 +307,7 @@ public class PlaybackService extends DaggerService {
          @Override
          public void onSkipToPrevious() {
              LocalTrack LocalTrack =  mTrackListManager.getPrevious();
+             mCurrent = mTrackListManager.getPos();
              setMeta(LocalTrack);
 
              mExoPlayer.seekTo(0);
