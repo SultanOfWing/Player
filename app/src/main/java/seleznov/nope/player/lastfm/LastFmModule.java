@@ -1,4 +1,4 @@
-package seleznov.nope.player.soundcloud;
+package seleznov.nope.player.lastfm;
 
 import dagger.Binds;
 import dagger.Module;
@@ -13,20 +13,20 @@ import seleznov.nope.player.di.FragmentScoped;
  */
 
 @Module
-public abstract class SoundCloudModule {
+public abstract class LastFmModule {
 
     @FragmentScoped
     @ContributesAndroidInjector
-    abstract SoundCloudFragment soundCloudFragment();
+    abstract LastFmFragment soundCloudFragment();
 
     @ActivityScoped
     @Binds
-    abstract SoundCloudContract.Presenter soundCloudPresenter(SoundCloudPresenter presenter);
+    abstract LastFmContract.Presenter soundCloudPresenter(LastFmPresenter presenter);
 
     @Provides
     @ActivityScoped
-    static CloudAdapter getCloudAdapter(){
-        return new CloudAdapter();
+    static LastFmAdapter getCloudAdapter(){
+        return new LastFmAdapter();
     }
 
 }

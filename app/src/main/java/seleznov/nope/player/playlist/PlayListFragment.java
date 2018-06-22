@@ -21,8 +21,8 @@ import dagger.android.support.DaggerFragment;
 import seleznov.nope.player.R;
 import seleznov.nope.player.eventbus.RxEventBus;
 import seleznov.nope.player.helper.PermissionInspector;
-import seleznov.nope.player.model.TrackListManager;
-import seleznov.nope.player.model.local.dto.LTrack;
+import seleznov.nope.player.model.local.TrackListManager;
+import seleznov.nope.player.model.local.dto.LocalTrack;
 
 /**
  * Created by User on 19.05.2018.
@@ -93,9 +93,9 @@ public class PlayListFragment extends DaggerFragment implements PlayListContract
     }
 
     @Override
-    public void setPlayList(List<LTrack> LTrackList){
-        mPlayListAdapter.setList(LTrackList);
-        mTrackListManager.setLTrackList(LTrackList);
+    public void setPlayList(List<LocalTrack> LocalTrackList){
+        mPlayListAdapter.setList(LocalTrackList);
+        mTrackListManager.setLocalTrackList(LocalTrackList);
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 

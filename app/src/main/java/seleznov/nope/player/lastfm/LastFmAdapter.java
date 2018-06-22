@@ -1,4 +1,4 @@
-package seleznov.nope.player.soundcloud;
+package seleznov.nope.player.lastfm;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -21,7 +21,7 @@ import seleznov.nope.player.model.remote.dto.Track;
  * Created by User on 20.06.2018.
  */
 
-public class CloudAdapter extends AdapterAbs<Track, CloudAdapter.CloudHolder> {
+public class LastFmAdapter extends AdapterAbs<Track, LastFmAdapter.CloudHolder> {
 
     @NonNull
     @Override
@@ -51,7 +51,11 @@ public class CloudAdapter extends AdapterAbs<Track, CloudAdapter.CloudHolder> {
 
         @Override
         public void bindItem(Track item) {
-            //TODO
+            String name = item.getName();
+            trackName.setText(name);
+
+            String artist = item.getArtist().getName();
+            trackArtist.setText(artist);
 
             Picasso.with(mContext)
                     .load(item.getImage().get(0).getText())

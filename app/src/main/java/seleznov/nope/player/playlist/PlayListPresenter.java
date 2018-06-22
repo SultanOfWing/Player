@@ -12,8 +12,7 @@ import javax.inject.Inject;
 
 import seleznov.nope.player.model.local.MediaCursor;
 import seleznov.nope.player.helper.MediaFinder;
-import seleznov.nope.player.model.local.dto.LTrack;
-import seleznov.nope.player.model.remote.LastFmApi;
+import seleznov.nope.player.model.local.dto.LocalTrack;
 
 /**
  * Created by User on 20.05.2018.
@@ -33,23 +32,23 @@ public class PlayListPresenter implements PlayListContract.Presenter {
 
     @Override
     public void updatePlayList() {
-        List<LTrack> LTrackList = new ArrayList<>();
+        List<LocalTrack> LocalTrackList = new ArrayList<>();
         Cursor cursor = MediaFinder.getAllMedia(mAppContext);
         MediaCursor mediaCursor = new MediaCursor(cursor);
 
         try {
             mediaCursor.moveToFirst();
             while (!mediaCursor.isAfterLast()) {
-                LTrack currLTrack =  mediaCursor.getTrack();
+                LocalTrack currLocalTrack =  mediaCursor.getTrack();
                 Cursor albumAptCursor = MediaFinder.getAlbumArt(mAppContext,
-                        currLTrack.getAlbumId());
+                        currLocalTrack.getAlbumId());
 
                 String albumArtUri;
                 try{
                     if(albumAptCursor.moveToFirst()){
                         albumArtUri = albumAptCursor.getString(
                                 albumAptCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
-                        currLTrack.setAlbumArt(albumArtUri);
+                        currLocalTrack.setAlbumArt(albumArtUri);
                     }
                 }
                 finally {
@@ -57,13 +56,13 @@ public class PlayListPresenter implements PlayListContract.Presenter {
                 }
 
 
-                LTrackList.add(currLTrack);
+                LocalTrackList.add(currLocalTrack);
                 cursor.moveToNext();
             }
         } finally {
             cursor.close();
         }
-        mView.setPlayList(LTrackList);
+        mView.setPlayList(LocalTrackList);
     }
 
     @Override

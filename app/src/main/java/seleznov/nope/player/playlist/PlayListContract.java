@@ -4,7 +4,7 @@ import java.util.List;
 
 import seleznov.nope.player.IPresenter;
 import seleznov.nope.player.IView;
-import seleznov.nope.player.model.local.dto.LTrack;
+import seleznov.nope.player.model.local.dto.LocalTrack;
 
 /**
  * Created by User on 20.05.2018.
@@ -17,6 +17,6 @@ public interface PlayListContract {
     }
 
     interface View extends IView<PlayListContract.Presenter> {
-        void setPlayList(List<LTrack> list);
+        void setPlayList(List<LocalTrack> list);
     }
 }

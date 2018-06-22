@@ -19,9 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 import seleznov.nope.player.controller.ControllerFragment;
+import seleznov.nope.player.lastfm.LastFmFragment;
 import seleznov.nope.player.playlist.PlayListFragment;
 import seleznov.nope.player.settings.SettingsFragment;
-import seleznov.nope.player.soundcloud.SoundCloudFragment;
 
 public class DaggerActivity extends DaggerAppCompatActivity {
 
@@ -29,7 +29,7 @@ public class DaggerActivity extends DaggerAppCompatActivity {
     @Inject
     PlayListFragment mPlayListFragment;
     @Inject
-    SoundCloudFragment mSoundCloudFragment;
+    LastFmFragment mLastFmFragment;
     @Inject
     SettingsFragment mSettingsFragment;
     @Inject
@@ -94,7 +94,7 @@ public class DaggerActivity extends DaggerAppCompatActivity {
         mFragmentTitleList = new ArrayList<>();
         Resources res = getResources();
         addFragment(mPlayListFragment, res.getString(R.string.tab1))
-                .addFragment(mSoundCloudFragment, res.getString(R.string.tab2))
+                .addFragment(mLastFmFragment, res.getString(R.string.tab2))
                 .addFragment(mSettingsFragment, res.getString(R.string.tab3));
     }
 

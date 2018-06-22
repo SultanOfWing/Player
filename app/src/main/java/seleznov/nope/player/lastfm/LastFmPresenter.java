@@ -1,6 +1,4 @@
-package seleznov.nope.player.soundcloud;
-
-import android.content.Context;
+package seleznov.nope.player.lastfm;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -13,7 +11,7 @@ import seleznov.nope.player.model.remote.LastFmApi;
  * Created by User on 20.05.2018.
  */
 
-public class SoundCloudPresenter implements SoundCloudContract.Presenter {
+public class LastFmPresenter implements LastFmContract.Presenter {
 
     private static final String API_KEY = "dccedcac6040621326d2c54a7722a54b";
 
@@ -24,11 +22,11 @@ public class SoundCloudPresenter implements SoundCloudContract.Presenter {
 
 
     @Nullable
-    private SoundCloudContract.View mView;
+    private LastFmContract.View mView;
     private LastFmApi mLastFmApi;
 
     @Inject
-    SoundCloudPresenter(LastFmApi lastFmApi){
+    LastFmPresenter(LastFmApi lastFmApi){
         mLastFmApi = lastFmApi;
     }
 
@@ -44,7 +42,7 @@ public class SoundCloudPresenter implements SoundCloudContract.Presenter {
     }
 
     @Override
-    public void takeView(SoundCloudContract.View view) {
+    public void takeView(LastFmContract.View view) {
         mView = view;
     }
 

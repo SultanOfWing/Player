@@ -36,8 +36,8 @@ import dagger.android.DaggerService;
 import seleznov.nope.player.DaggerActivity;
 import seleznov.nope.player.R;
 import seleznov.nope.player.helper.MediaStyleHelper;
-import seleznov.nope.player.model.TrackListManager;
-import seleznov.nope.player.model.local.dto.LTrack;
+import seleznov.nope.player.model.local.TrackListManager;
+import seleznov.nope.player.model.local.dto.LocalTrack;
 
 import static android.support.v4.media.app.NotificationCompat.MediaStyle;
 
@@ -198,9 +198,9 @@ public class PlaybackService extends DaggerService {
         public void onPlay() {
             startService(PlaybackService.newIntent(getApplicationContext()));
 
-            LTrack LTrack = mTrackListManager.getTrack();
-            setMeta(LTrack);
-            String s = LTrack.getUri();
+            LocalTrack LocalTrack = mTrackListManager.getTrack();
+            setMeta(LocalTrack);
+            String s = LocalTrack.getUri();
             prepareFromExternal(Uri.parse(s));
 
             int audioFocusResult = mAudioManager.requestAudioFocus(
@@ -284,8 +284,8 @@ public class PlaybackService extends DaggerService {
 
          @Override
          public void onSkipToNext() {
-             LTrack LTrack = mTrackListManager.getNext();
-             setMeta(LTrack);
+             LocalTrack LocalTrack = mTrackListManager.getNext();
+             setMeta(LocalTrack);
 
              mExoPlayer.seekTo(0);
              mSession.setPlaybackState(
@@ -293,13 +293,13 @@ public class PlaybackService extends DaggerService {
                              PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
              refreshNotification(state);
 
-             prepareFromExternal(Uri.parse(LTrack.getUri()));
+             prepareFromExternal(Uri.parse(LocalTrack.getUri()));
          }
 
          @Override
          public void onSkipToPrevious() {
-             LTrack LTrack =  mTrackListManager.getPrevious();
-             setMeta(LTrack);
+             LocalTrack LocalTrack =  mTrackListManager.getPrevious();
+             setMeta(LocalTrack);
 
              mExoPlayer.seekTo(0);
              mSession.setPlaybackState(
@@ -307,7 +307,7 @@ public class PlaybackService extends DaggerService {
                              PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1).build());
              refreshNotification(state);
 
-             prepareFromExternal(Uri.parse(LTrack.getUri()));
+             prepareFromExternal(Uri.parse(LocalTrack.getUri()));
          }
 
         private void prepareFromExternal(Uri uri){
@@ -327,15 +327,15 @@ public class PlaybackService extends DaggerService {
             
         }
 
-        private void setMeta(LTrack LTrack){
+        private void setMeta(LocalTrack LocalTrack){
             MediaMetadataCompat metadata = mMetadataBuilder
-                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, LTrack.getId().toString())
-                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, LTrack.getTitle())
-                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, LTrack.getAlbum())
-                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, LTrack.getArtist())
-                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, LTrack.getDuration())
-                    .putString(MediaMetadataCompat.METADATA_KEY_ART_URI, LTrack.getAlbumArt())
-                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, LTrack.getUri())
+                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, LocalTrack.getId().toString())
+                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, LocalTrack.getTitle())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, LocalTrack.getAlbum())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, LocalTrack.getArtist())
+                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, LocalTrack.getDuration())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ART_URI, LocalTrack.getAlbumArt())
+                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, LocalTrack.getUri())
                     .build();
 
             mSession.setMetadata(metadata);

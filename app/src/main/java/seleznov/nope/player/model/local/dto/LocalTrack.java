@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by User on 22.05.2018.
  */
 
-public class LTrack implements Serializable {
+public class LocalTrack implements Serializable {
 
     private Long mId;
     private String mTitle;
@@ -17,8 +17,8 @@ public class LTrack implements Serializable {
     private String mAlbumArt;
     private String mUri;
 
-    public LTrack(Long id, String title, String artist, String album,
-                  Long duration, String albumId, String uri){
+    public LocalTrack(Long id, String title, String artist, String album,
+                      Long duration, String albumId, String uri){
         mId = id;
         mTitle = title;
         mArtist = artist;
