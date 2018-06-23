@@ -35,12 +35,8 @@ public class TrackListManager {
         return getTrack();
     }
 
-    public void add(LocalTrack LocalTrack){
-        mLocalTrackList.add(LocalTrack);
-    }
-
-    public void addAll(List<LocalTrack> LocalTrackList){
-        mLocalTrackList.addAll(LocalTrackList);
+    public LocalTrack getTrack() {
+        return mLocalTrackList.get(mCurrent);
     }
 
     public void setPos(int pos) {
@@ -49,10 +45,6 @@ public class TrackListManager {
 
     public int getPos(){
         return mCurrent;
-    }
-
-    public LocalTrack getTrack() {
-        return mLocalTrackList.get(mCurrent);
     }
 
     public void setLocalTrackList(List<LocalTrack> localTrackList){

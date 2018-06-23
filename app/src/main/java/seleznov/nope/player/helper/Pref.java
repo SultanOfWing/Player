@@ -7,8 +7,9 @@ import android.preference.PreferenceManager;
  * Created by User on 13.06.2018.
  */
 
-public class SeekPref {
+public class Pref {
     private static final String LAST_TRACK_DUR = "trackDur";
+    private static final String IS_PLAYED = "isPlayed";
 
     public static int getLastTrackDur(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
@@ -21,4 +22,5 @@ public class SeekPref {
                 .putInt(LAST_TRACK_DUR, dur)
                 .apply();
     }
+
 }

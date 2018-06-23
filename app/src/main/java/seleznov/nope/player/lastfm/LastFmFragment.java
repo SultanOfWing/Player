@@ -41,8 +41,6 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
     LastFmAdapter mLastFmAdapter;
     @Inject
     TrackListManager mTrackListManager;
-    @Inject
-    RxEventBus mEventBus;
 
     private View mView;
 

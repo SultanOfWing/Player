@@ -36,6 +36,7 @@ import dagger.android.DaggerService;
 import seleznov.nope.player.DaggerActivity;
 import seleznov.nope.player.R;
 import seleznov.nope.player.helper.MediaStyleHelper;
+import seleznov.nope.player.helper.Pref;
 import seleznov.nope.player.model.local.TrackListManager;
 import seleznov.nope.player.model.local.dto.LocalTrack;
 

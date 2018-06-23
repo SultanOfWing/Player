@@ -37,9 +37,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.support.DaggerFragment;
+import io.reactivex.disposables.Disposable;
 import seleznov.nope.player.R;
 import seleznov.nope.player.eventbus.RxEventBus;
-import seleznov.nope.player.helper.SeekPref;
+import seleznov.nope.player.helper.Pref;
 import seleznov.nope.player.model.local.TrackListManager;
 import seleznov.nope.player.playback.PlaybackService;
 
@@ -76,6 +77,7 @@ public class ControllerFragment extends DaggerFragment {
     private PlaybackStateCompat mPlaybackState;
     private ScheduledFuture<?> mScheduleFuture;
     private boolean mIsPlaying;
+    private Disposable mDisposable;
 
     private final Runnable mUpdateTask = this::updateSeek;
     private final ScheduledExecutorService mScheduledExecutorService =
@@ -94,7 +96,7 @@ public class ControllerFragment extends DaggerFragment {
         ButterKnife.bind(this, view);
         Intent intent = PlaybackService.newIntent(getContext());
         getActivity().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
-        int dur = SeekPref.getLastTrackDur(mAppContext);
+        int dur = Pref.getLastTrackDur(mAppContext);
         if(dur != 0){
             seekBar.setMax(dur);
         }
@@ -140,7 +142,7 @@ public class ControllerFragment extends DaggerFragment {
             }
         });
 
-        mEventBus.subscribe((message) -> {
+        mDisposable = mEventBus.subscribe((message) -> {
             if (message instanceof Integer) {
                 TransportControls transportControls =
                         mControllerCompat.getTransportControls();
@@ -148,8 +150,9 @@ public class ControllerFragment extends DaggerFragment {
                 if(position == mListManager.getPos() && mIsPlaying){
                     transportControls.pause();
                 }
-                else transportControls.play();
-
+                else{
+                    transportControls.play();
+                }
                 mListManager.setPos(position);
                }
             });
@@ -162,6 +165,7 @@ public class ControllerFragment extends DaggerFragment {
         super.onDestroy();
         stopUpdateSeek();
         mScheduledExecutorService.shutdown();
+        mDisposable.dispose();
     }
 
 
@@ -232,7 +236,7 @@ public class ControllerFragment extends DaggerFragment {
                    MediaMetadataCompat.METADATA_KEY_ART_URI);
            int dur =(int) metadata.getLong(
                    MediaMetadataCompat.METADATA_KEY_DURATION);
-           SeekPref.setLastTrackDur(mAppContext, dur);
+           Pref.setLastTrackDur(mAppContext, dur);
            seekBar.setMax(dur);
 
             File file = null;
