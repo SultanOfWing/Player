@@ -35,6 +35,7 @@
                     android:layout_marginEnd="45dp"
                     android:layout_toStartOf="@+id/button_play_pause"
                     android:src="@drawable/ic_back"
+                    style="@style/ButtonControllerStyle"
                     />
 
                 <ImageButton
@@ -45,6 +46,7 @@
                     android:layout_marginEnd="42dp"
                     android:layout_toStartOf="@+id/button_forward"
                     android:src="@drawable/ic_play"
+                    style="@style/ButtonControllerStyle"
                     />
 
                 <ImageButton
@@ -55,6 +57,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="50dp"
                     android:src="@drawable/ic_forward"
+                    style="@style/ButtonControllerStyle"
                     />
 
             </RelativeLayout>

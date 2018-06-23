@@ -33,10 +33,9 @@ import com.google.android.exoplayer2.upstream.FileDataSource;
 import javax.inject.Inject;
 
 import dagger.android.DaggerService;
-import seleznov.nope.player.DaggerActivity;
+import seleznov.nope.player.PrimaryActivity;
 import seleznov.nope.player.R;
 import seleznov.nope.player.helper.MediaStyleHelper;
-import seleznov.nope.player.helper.Pref;
 import seleznov.nope.player.model.local.TrackListManager;
 import seleznov.nope.player.model.local.dto.LocalTrack;
 
@@ -105,7 +104,7 @@ public class PlaybackService extends DaggerService {
         mSession.setCallback(mediaSessionCallback);
 
         Context context = getApplicationContext();
-        Intent intent = DaggerActivity.newIntent(context);
+        Intent intent = PrimaryActivity.newIntent(context);
         mSession.setSessionActivity(PendingIntent.getActivity(context,
                 0, intent, 0));
 
@@ -148,7 +147,7 @@ public class PlaybackService extends DaggerService {
 
         builder.addAction(
                 new NotificationCompat.Action(
-                        android.R.drawable.ic_media_previous, getString(R.string.previous),
+                       R.drawable.ic_back, getString(R.string.previous),
                         MediaButtonReceiver.buildMediaButtonPendingIntent(
                                 this,
                                 PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)));
@@ -156,19 +155,19 @@ public class PlaybackService extends DaggerService {
         if (state == PlaybackStateCompat.STATE_PLAYING)
             builder.addAction(
                     new NotificationCompat.Action(
-                            android.R.drawable.ic_media_pause, getString(R.string.pause),
+                           R.drawable.ic_pause, getString(R.string.pause),
                             MediaButtonReceiver.buildMediaButtonPendingIntent(
                                     this,
                                     PlaybackStateCompat.ACTION_PLAY_PAUSE)));
         else
             builder.addAction(
                     new NotificationCompat.Action(
-                            android.R.drawable.ic_media_play, getString(R.string.play),
+                            R.drawable.ic_play, getString(R.string.play),
                             MediaButtonReceiver.buildMediaButtonPendingIntent(
                                     this,
                                     PlaybackStateCompat.ACTION_PLAY_PAUSE)));
         builder.addAction(
-                new NotificationCompat.Action(android.R.drawable.ic_media_next, getString(R.string.next),
+                new NotificationCompat.Action(R.drawable.ic_forward, getString(R.string.next),
                         MediaButtonReceiver.buildMediaButtonPendingIntent(
                                 this,
                                 PlaybackStateCompat.ACTION_SKIP_TO_NEXT)));
@@ -182,7 +181,7 @@ public class PlaybackService extends DaggerService {
                                 PlaybackStateCompat.ACTION_STOP))
                 .setMediaSession(mSession.getSessionToken()));
 
-        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setSmallIcon(R.drawable.player_icon);
         builder.setColor(ContextCompat.getColor(this,
                 R.color.colorPrimaryDark));
         builder.setShowWhen(false);

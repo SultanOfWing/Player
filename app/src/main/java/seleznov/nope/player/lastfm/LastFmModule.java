@@ -6,6 +6,7 @@ import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import seleznov.nope.player.di.ActivityScoped;
 import seleznov.nope.player.di.FragmentScoped;
+import seleznov.nope.player.lastfmweb.WebWrapFragment;
 
 
 /**
@@ -17,7 +18,11 @@ public abstract class LastFmModule {
 
     @FragmentScoped
     @ContributesAndroidInjector
-    abstract LastFmFragment soundCloudFragment();
+    abstract LastFmFragment lastFmFragment();
+
+    @FragmentScoped
+    @ContributesAndroidInjector
+    abstract WebWrapFragment lastFmWebFragment();
 
     @ActivityScoped
     @Binds

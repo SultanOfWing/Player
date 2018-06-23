@@ -9,7 +9,8 @@
     </style>
 
     <style name="ButtonControllerStyle" parent="Base.Widget.AppCompat.ImageButton">
-        <item name="android:background">@color/colorAccent</item>
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:tint">@color/colorPrimaryDark</item>
     </style>
 
     <style name="TabLayoutTextStyle" parent="TextAppearance.Design.Tab">
@@ -18,6 +19,7 @@
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textAllCaps">true</item>
     </style>
+
 
 
 </resources>

@@ -9,9 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +23,7 @@ import seleznov.nope.player.lastfm.LastFmFragment;
 import seleznov.nope.player.playlist.PlayListFragment;
 import seleznov.nope.player.settings.SettingsFragment;
 
-public class DaggerActivity extends DaggerAppCompatActivity {
+public class PrimaryActivity extends DaggerAppCompatActivity {
 
     @Inject
     PlayListFragment mPlayListFragment;
@@ -47,20 +44,19 @@ public class DaggerActivity extends DaggerAppCompatActivity {
     private List<String> mFragmentTitleList;
 
     public static Intent newIntent(Context context) {
-        return new Intent(context, DaggerActivity.class);
+        return new Intent(context, PrimaryActivity.class);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+        setContentView(R.layout.activity_primary);
 
         ButterKnife.bind(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         iniTab();
         viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
-
 
             @Override
             public Fragment getItem(int position) {
@@ -81,14 +77,10 @@ public class DaggerActivity extends DaggerAppCompatActivity {
 
         tabLayout.setupWithViewPager(viewPager);
 
-        Fragment fragment = fragmentManager.findFragmentById(R.id.controller_container);
+        fragmentManager.beginTransaction()
+                .add(R.id.controller_container, mControllerFragment)
+                .commit();
 
-        if (fragment == null) {
-            fragment = mControllerFragment;
-            fragmentManager.beginTransaction()
-                    .add(R.id.controller_container, fragment)
-                    .commit();
-        }
     }
 
     private void iniTab() {
@@ -100,7 +92,7 @@ public class DaggerActivity extends DaggerAppCompatActivity {
                 .addFragment(mSettingsFragment, res.getString(R.string.tab3));
     }
 
-    private DaggerActivity addFragment(Fragment fragment, String title) {
+    private PrimaryActivity addFragment(Fragment fragment, String title) {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
         return this;

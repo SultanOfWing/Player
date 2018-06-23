@@ -1,5 +1,6 @@
 package seleznov.nope.player.lastfm;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,15 +20,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerFragment;
 import seleznov.nope.player.R;
-import seleznov.nope.player.eventbus.RxEventBus;
+import seleznov.nope.player.adapter.AdapterAbs;
+import seleznov.nope.player.di.ActivityScoped;
+import seleznov.nope.player.lastfmweb.WebWrapActivity;
 import seleznov.nope.player.model.local.TrackListManager;
+import seleznov.nope.player.model.local.dto.LocalTrack;
 import seleznov.nope.player.model.remote.dto.Track;
 import seleznov.nope.player.model.remote.dto.Tracks;
 
 /**
  * Created by User on 19.05.2018.
  */
-
 public class LastFmFragment extends DaggerFragment implements LastFmContract.View {
 
     @BindView(R.id.search_view)
@@ -51,7 +54,7 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cloud, container,
+        View view = inflater.inflate(R.layout.fragment_lastfm, container,
                 false);
 
         ButterKnife.bind(this, view);
@@ -61,6 +64,17 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
         DividerItemDecoration dID = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dID);
+
+        mLastFmAdapter.setOnItemClickListener(new AdapterAbs.OnItemClickListener<Track>() {
+
+            @Override
+            public void onClick(Track item, int pos) {
+                String url = item.getUrl();
+                Intent intent = WebWrapActivity.newIntent(getContext(), url);
+                startActivity(intent);
+            }
+        });
+
         mPresenter.updateTopList();
 
         return view;
