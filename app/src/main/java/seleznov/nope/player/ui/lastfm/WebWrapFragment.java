@@ -1,4 +1,4 @@
-package seleznov.nope.player.ui.lastfm.lastfmweb;
+package seleznov.nope.player.ui.lastfm;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,8 +32,8 @@ public class WebWrapFragment extends DaggerFragment {
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
- //   @Inject
-   // String mUrl;
+    @Inject
+    String mUrl;
 
     @Inject
     public WebWrapFragment(){}
@@ -64,7 +64,7 @@ public class WebWrapFragment extends DaggerFragment {
         });
 
         webView.setWebViewClient(new WebViewClient());
-       // webView.loadUrl(url);
+        webView.loadUrl(mUrl);
     }
 
 }

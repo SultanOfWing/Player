@@ -15,14 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PrimaryActivity">
+        <activity android:name=".ui.PrimaryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.lastfm.lastfmweb.WebWrapActivity" />
+        <activity android:name=".ui.WebWrapActivity" />
 
         <service
             android:name=".playback.PlaybackService">

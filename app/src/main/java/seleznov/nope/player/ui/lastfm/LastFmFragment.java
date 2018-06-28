@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import dagger.android.support.DaggerFragment;
 import seleznov.nope.player.R;
 import seleznov.nope.player.adapter.AdapterAbs;
-import seleznov.nope.player.ui.lastfm.lastfmweb.WebWrapActivity;
+import seleznov.nope.player.ui.WebWrapActivity;
 import seleznov.nope.player.model.local.TrackListManager;
 import seleznov.nope.player.model.remote.dto.Track;
 import seleznov.nope.player.model.remote.dto.Tracks;
@@ -64,7 +64,6 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
         recyclerView.addItemDecoration(dID);
 
         mLastFmAdapter.setOnItemClickListener(new AdapterAbs.OnItemClickListener<Track>() {
-
             @Override
             public void onClick(Track item, int pos) {
                 String url = item.getUrl();

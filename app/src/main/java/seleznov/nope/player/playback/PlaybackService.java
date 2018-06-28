@@ -33,7 +33,7 @@ import com.google.android.exoplayer2.upstream.FileDataSource;
 import javax.inject.Inject;
 
 import dagger.android.DaggerService;
-import seleznov.nope.player.PrimaryActivity;
+import seleznov.nope.player.ui.PrimaryActivity;
 import seleznov.nope.player.R;
 import seleznov.nope.player.helper.MediaStyleHelper;
 import seleznov.nope.player.model.local.TrackListManager;

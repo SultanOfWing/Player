@@ -2,10 +2,9 @@ package seleznov.nope.player.di;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import seleznov.nope.player.PrimaryActivity;
+import seleznov.nope.player.ui.PrimaryActivity;
 import seleznov.nope.player.controller.ControllerModule;
-import seleznov.nope.player.ui.lastfm.lastfmweb.WebWrapActivity;
-import seleznov.nope.player.ui.lastfm.lastfmweb.WebWrapModule;
+import seleznov.nope.player.ui.WebWrapActivity;
 import seleznov.nope.player.playback.PlaybackModule;
 import seleznov.nope.player.playback.PlaybackService;
 import seleznov.nope.player.ui.playlist.PlayListModule;
@@ -25,7 +24,7 @@ public abstract class ComponentBindingModule {
     abstract PrimaryActivity primaryActivity();
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = WebWrapModule.class)
+    @ContributesAndroidInjector(modules = LastFmModule.class)
     abstract WebWrapActivity webWrapActivity();
 
     @ServiceScoped

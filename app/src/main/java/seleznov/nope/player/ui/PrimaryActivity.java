@@ -1,4 +1,4 @@
-package seleznov.nope.player;
+package seleznov.nope.player.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
+import seleznov.nope.player.R;
 import seleznov.nope.player.controller.ControllerFragment;
 import seleznov.nope.player.ui.lastfm.LastFmFragment;
 import seleznov.nope.player.ui.playlist.PlayListFragment;
