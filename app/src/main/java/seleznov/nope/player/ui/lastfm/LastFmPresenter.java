@@ -1,4 +1,4 @@
-package seleznov.nope.player.lastfm;
+package seleznov.nope.player.ui.lastfm;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;

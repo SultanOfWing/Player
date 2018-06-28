@@ -1,8 +1,7 @@
-package seleznov.nope.player.settings;
+package seleznov.nope.player.ui.settings;
 
 import seleznov.nope.player.IPresenter;
 import seleznov.nope.player.IView;
-import seleznov.nope.player.playlist.PlayListContract;
 
 /**
  * Created by User on 20.05.2018.

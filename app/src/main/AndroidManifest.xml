@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".lastfmweb.WebWrapActivity" />
+        <activity android:name=".ui.lastfm.lastfmweb.WebWrapActivity" />
 
         <service
             android:name=".playback.PlaybackService">

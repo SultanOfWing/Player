@@ -1,4 +1,4 @@
-package seleznov.nope.player.lastfm;
+package seleznov.nope.player.ui.playlist;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,29 +10,33 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import seleznov.nope.player.R;
 import seleznov.nope.player.adapter.AdapterAbs;
 import seleznov.nope.player.adapter.ViewHolderAbs;
-import seleznov.nope.player.model.remote.dto.Track;
+import seleznov.nope.player.model.local.dto.LocalTrack;
 
 /**
- * Created by User on 20.06.2018.
+ * Created by User on 22.05.2018.
  */
 
-public class LastFmAdapter extends AdapterAbs<Track, LastFmAdapter.CloudHolder> {
+public class PlayListAdapter extends AdapterAbs<LocalTrack, PlayListAdapter.PlayListHolder> {
+
 
     @NonNull
     @Override
-    public CloudHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PlayListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater
                 .inflate(R.layout.item_track, parent, false);
-        return new CloudHolder(view);
+        return new PlayListHolder(view);
     }
 
-    public class CloudHolder extends ViewHolderAbs<Track>{
+
+    public class PlayListHolder extends ViewHolderAbs<LocalTrack> {
 
         @BindView(R.id.image_album)
         ImageView albumImg;
@@ -43,23 +47,27 @@ public class LastFmAdapter extends AdapterAbs<Track, LastFmAdapter.CloudHolder> 
 
         private Context mContext;
 
-        public CloudHolder(View itemView) {
+
+        public PlayListHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             mContext = itemView.getContext();
         }
 
         @Override
-        public void bindItem(Track item) {
-            String name = item.getName();
-            trackName.setText(name);
+        public void bindItem(LocalTrack item) {
+            trackName.setText(item.getTitle());
+            trackArtist.setText(item.getArtist());
 
-            String artist = item.getArtist().getName();
-            trackArtist.setText(artist);
+            File file = null;
+            String path = item.getAlbumArt();
+            if(path != null){
+                file = new File(path);
+            }
 
             Picasso.with(mContext)
-                    .load(item.getImage().get(0).getText())
-                    .placeholder(R.drawable.lastfm_icon)
+                    .load(file)
+                    .placeholder(R.drawable.placeholder)
                     .into(albumImg);
         }
     }

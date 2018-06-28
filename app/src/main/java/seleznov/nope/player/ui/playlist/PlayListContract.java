@@ -1,4 +1,4 @@
-package seleznov.nope.player.playlist;
+package seleznov.nope.player.ui.playlist;
 
 import java.util.List;
 

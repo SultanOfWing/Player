@@ -1,4 +1,4 @@
-package seleznov.nope.player.playlist;
+package seleznov.nope.player.ui.playlist;
 
 import android.Manifest;
 import android.os.Bundle;

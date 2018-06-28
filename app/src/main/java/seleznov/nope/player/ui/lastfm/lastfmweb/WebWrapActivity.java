@@ -1,4 +1,4 @@
-package seleznov.nope.player.lastfmweb;
+package seleznov.nope.player.ui.lastfm.lastfmweb;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +18,7 @@ import seleznov.nope.player.R;
 
 public class WebWrapActivity extends DaggerAppCompatActivity {
 
-    protected static final String STRING_URL = "seleznov.nope.player.lastfmweb.url";
+    protected static final String STRING_URL = "seleznov.nope.player.ui.lastfm.lastfmweb.url";
 
     @Inject
     Lazy<WebWrapFragment> mWebWrapFragment;

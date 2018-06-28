@@ -1,4 +1,4 @@
-package seleznov.nope.player.settings;
+package seleznov.nope.player.ui.settings;
 
 import javax.inject.Inject;
 

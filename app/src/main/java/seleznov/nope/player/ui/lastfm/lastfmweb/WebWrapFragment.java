@@ -1,4 +1,4 @@
-package seleznov.nope.player.lastfmweb;
+package seleznov.nope.player.ui.lastfm.lastfmweb;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

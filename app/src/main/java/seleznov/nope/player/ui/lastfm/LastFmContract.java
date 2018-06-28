@@ -1,4 +1,4 @@
-package seleznov.nope.player.lastfm;
+package seleznov.nope.player.ui.lastfm;
 
 import seleznov.nope.player.IPresenter;
 import seleznov.nope.player.IView;

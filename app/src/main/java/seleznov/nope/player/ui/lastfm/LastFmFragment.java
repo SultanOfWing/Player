@@ -1,4 +1,4 @@
-package seleznov.nope.player.lastfm;
+package seleznov.nope.player.ui.lastfm;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,10 +21,8 @@ import butterknife.ButterKnife;
 import dagger.android.support.DaggerFragment;
 import seleznov.nope.player.R;
 import seleznov.nope.player.adapter.AdapterAbs;
-import seleznov.nope.player.di.ActivityScoped;
-import seleznov.nope.player.lastfmweb.WebWrapActivity;
+import seleznov.nope.player.ui.lastfm.lastfmweb.WebWrapActivity;
 import seleznov.nope.player.model.local.TrackListManager;
-import seleznov.nope.player.model.local.dto.LocalTrack;
 import seleznov.nope.player.model.remote.dto.Track;
 import seleznov.nope.player.model.remote.dto.Tracks;
 

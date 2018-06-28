@@ -19,9 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 import seleznov.nope.player.controller.ControllerFragment;
-import seleznov.nope.player.lastfm.LastFmFragment;
-import seleznov.nope.player.playlist.PlayListFragment;
-import seleznov.nope.player.settings.SettingsFragment;
+import seleznov.nope.player.ui.lastfm.LastFmFragment;
+import seleznov.nope.player.ui.playlist.PlayListFragment;
+import seleznov.nope.player.ui.settings.SettingsFragment;
 
 public class PrimaryActivity extends DaggerAppCompatActivity {
 

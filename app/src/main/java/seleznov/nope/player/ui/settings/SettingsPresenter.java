@@ -1,4 +1,4 @@
-package seleznov.nope.player.settings;
+package seleznov.nope.player.ui.settings;
 
 /**
  * Created by User on 20.05.2018.

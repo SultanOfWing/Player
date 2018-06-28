@@ -1,4 +1,4 @@
-package seleznov.nope.player.lastfm;
+package seleznov.nope.player.ui.lastfm;
 
 import dagger.Binds;
 import dagger.Module;
@@ -6,7 +6,7 @@ import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import seleznov.nope.player.di.ActivityScoped;
 import seleznov.nope.player.di.FragmentScoped;
-import seleznov.nope.player.lastfmweb.WebWrapFragment;
+import seleznov.nope.player.ui.lastfm.lastfmweb.WebWrapFragment;
 
 
 /**
