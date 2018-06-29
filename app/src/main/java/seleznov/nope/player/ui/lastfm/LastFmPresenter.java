@@ -29,22 +29,22 @@ public class LastFmPresenter implements LastFmContract.Presenter {
     }
 
     @Override
-    public void updateChartTopList() {
+    public void updateChartTopList(String artist) {
         if(mView == null){
             return;
         }
-        mLastFmApi.getTracks(METHOD_CHART_TOP, API_KEY, FORMAT)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(lastFm -> {mView.setTopList(lastFm.getTracks());},
-                        Throwable::printStackTrace);
-    }
+        if(artist == null){
+            mLastFmApi.getTracks(METHOD_CHART_TOP, API_KEY, FORMAT)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(lastFm -> {mView.setTopList(lastFm.getTracks());},
+                            Throwable::printStackTrace);
+        }else {
+            mLastFmApi.getTracksByArtist(METHOD_ARTIST_TOP, artist, API_KEY, FORMAT)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(lastFm -> {mView.setTopList(lastFm.getToptracks());},
+                            Throwable::printStackTrace);
+        }
 
-    @Override
-    public void updateArtistTopList(String artist) {
-        mLastFmApi.getTracksByArtist(METHOD_ARTIST_TOP, artist, API_KEY, FORMAT)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(lastFm -> {mView.setTopList(lastFm.getToptracks());},
-                        Throwable::printStackTrace);
     }
 
     @Override

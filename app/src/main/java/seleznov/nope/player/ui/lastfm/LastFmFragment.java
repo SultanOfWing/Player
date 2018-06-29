@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import dagger.android.support.DaggerFragment;
 import seleznov.nope.player.R;
 import seleznov.nope.player.adapter.AdapterAbs;
+import seleznov.nope.player.helper.Pref;
 import seleznov.nope.player.model.remote.dto.Track;
 import seleznov.nope.player.model.remote.dto.Tracks;
 import seleznov.nope.player.ui.WebWrapActivity;
@@ -82,8 +83,8 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
                 startActivity(intent);
             }
         });
-
-        mPresenter.updateChartTopList();
+        String query = Pref.getQuery(getContext());
+        mPresenter.updateChartTopList(query);
         return view;
     }
 
@@ -97,7 +98,8 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mPresenter.updateArtistTopList(query);
+                Pref.setQuery(getContext(), query);
+                mPresenter.updateChartTopList(query);
                 return true;
             }
 
@@ -106,13 +108,19 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
                 return false;
             }
         });
+
+        searchView.setOnSearchClickListener(view -> {
+            String query = Pref.getQuery(getContext());
+            searchView.setQuery(query, false);
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mPresenter.takeView(this);
-        mPresenter.updateChartTopList();
+        String query = Pref.getQuery(getContext());
+        mPresenter.updateChartTopList(query);
     }
 
     @Override
