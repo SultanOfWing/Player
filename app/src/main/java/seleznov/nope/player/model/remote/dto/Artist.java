@@ -1,11 +1,8 @@
+
 package seleznov.nope.player.model.remote.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-/**
- * Created by User on 21.06.2018.
- */
 
 public class Artist {
 
@@ -42,4 +39,5 @@ public class Artist {
     public void setUrl(String url) {
         this.url = url;
     }
+
 }

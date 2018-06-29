@@ -1,22 +1,15 @@
+
 package seleznov.nope.player.model.remote.dto;
 
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-
-/**
- * Created by User on 21.06.2018.
- */
-
 public class Track {
+
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("duration")
-    @Expose
-    private String duration;
     @SerializedName("playcount")
     @Expose
     private String playcount;
@@ -29,15 +22,15 @@ public class Track {
     @SerializedName("url")
     @Expose
     private String url;
-    @SerializedName("streamable")
-    @Expose
-    private Streamable streamable;
     @SerializedName("artist")
     @Expose
     private Artist artist;
     @SerializedName("image")
     @Expose
     private List<Image> image = null;
+    @SerializedName("@attr")
+    @Expose
+    private Attr attr;
 
     public String getName() {
         return name;
@@ -45,14 +38,6 @@ public class Track {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
     }
 
     public String getPlaycount() {
@@ -87,13 +72,6 @@ public class Track {
         this.url = url;
     }
 
-    public Streamable getStreamable() {
-        return streamable;
-    }
-
-    public void setStreamable(Streamable streamable) {
-        this.streamable = streamable;
-    }
 
     public Artist getArtist() {
         return artist;
@@ -110,4 +88,13 @@ public class Track {
     public void setImage(List<Image> image) {
         this.image = image;
     }
+
+    public Attr getAttr() {
+        return attr;
+    }
+
+    public void setAttr(Attr attr) {
+        this.attr = attr;
+    }
+
 }

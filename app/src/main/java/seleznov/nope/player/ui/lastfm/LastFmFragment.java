@@ -9,6 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,18 +24,19 @@ import butterknife.ButterKnife;
 import dagger.android.support.DaggerFragment;
 import seleznov.nope.player.R;
 import seleznov.nope.player.adapter.AdapterAbs;
-import seleznov.nope.player.ui.WebWrapActivity;
-import seleznov.nope.player.model.local.TrackListManager;
 import seleznov.nope.player.model.remote.dto.Track;
 import seleznov.nope.player.model.remote.dto.Tracks;
+import seleznov.nope.player.ui.WebWrapActivity;
+import seleznov.nope.player.model.local.TrackListManager;
+
 
 /**
  * Created by User on 19.05.2018.
  */
 public class LastFmFragment extends DaggerFragment implements LastFmContract.View {
 
-    @BindView(R.id.search_view)
-    SearchView searchView;
+    private static String TAG = "LastFmFragment";
+
     @BindView(R.id.cloud_recycler_view)
     RecyclerView recyclerView;
 
@@ -47,6 +51,13 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
 
     @Inject
     public LastFmFragment(){};
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
 
     @Nullable
     @Override
@@ -72,16 +83,36 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
             }
         });
 
-        mPresenter.updateTopList();
-
+        mPresenter.updateChartTopList();
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        super.onCreateOptionsMenu(menu, menuInflater);
+        menuInflater.inflate(R.menu.fragment_last_fm, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.search_view);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mPresenter.updateArtistTopList(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mPresenter.takeView(this);
-        mPresenter.updateTopList();
+        mPresenter.updateChartTopList();
     }
 
     @Override
@@ -96,4 +127,5 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
         mLastFmAdapter.setList(trackList);
         recyclerView.getAdapter().notifyDataSetChanged();
     }
+
 }

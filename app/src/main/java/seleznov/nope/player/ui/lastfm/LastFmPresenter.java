@@ -14,12 +14,10 @@ import seleznov.nope.player.model.remote.LastFmApi;
 public class LastFmPresenter implements LastFmContract.Presenter {
 
     private static final String API_KEY = "dccedcac6040621326d2c54a7722a54b";
-
     private static final String FORMAT = "json";
 
-    private static final String METHOD_TOP = "chart.gettoptracks";
-
-
+    private static final String METHOD_CHART_TOP = "chart.gettoptracks";
+    private static final String METHOD_ARTIST_TOP = "artist.gettoptracks";
 
     @Nullable
     private LastFmContract.View mView;
@@ -31,13 +29,21 @@ public class LastFmPresenter implements LastFmContract.Presenter {
     }
 
     @Override
-    public void updateTopList() {
+    public void updateChartTopList() {
         if(mView == null){
             return;
         }
-        mLastFmApi.getTracks(METHOD_TOP, API_KEY, FORMAT)
+        mLastFmApi.getTracks(METHOD_CHART_TOP, API_KEY, FORMAT)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(lastFm -> {mView.setTopList(lastFm.getTracks());},
+                        Throwable::printStackTrace);
+    }
+
+    @Override
+    public void updateArtistTopList(String artist) {
+        mLastFmApi.getTracksByArtist(METHOD_ARTIST_TOP, artist, API_KEY, FORMAT)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(lastFm -> {mView.setTopList(lastFm.getToptracks());},
                         Throwable::printStackTrace);
     }
 

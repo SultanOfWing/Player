@@ -43,4 +43,15 @@ public class WebWrapActivity extends DaggerAppCompatActivity {
                 .add(R.id.web_container, mWebWrapFragment.get())
                 .commit();
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        WebWrapFragment fragment = mWebWrapFragment.get();
+        if (fragment.canGoBack()) {
+            fragment.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

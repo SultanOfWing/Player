@@ -1,13 +1,10 @@
-package seleznov.nope.player.model.remote.dto;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package seleznov.nope.player.model.remote.dto;
 
 import java.util.List;
 
-/**
- * Created by User on 21.06.2018.
- */
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Tracks {
     @SerializedName("track")
@@ -15,7 +12,7 @@ public class Tracks {
     private List<Track> track = null;
     @SerializedName("@attr")
     @Expose
-    private Attr attr;
+    private Attr_ attr;
 
     public List<Track> getTrack() {
         return track;
@@ -25,11 +22,12 @@ public class Tracks {
         this.track = track;
     }
 
-    public Attr getAttr() {
+    public Attr_ getAttr() {
         return attr;
     }
 
-    public void setAttr(Attr attr) {
+    public void setAttr(Attr_ attr) {
         this.attr = attr;
     }
+
 }

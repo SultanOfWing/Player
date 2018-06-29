@@ -67,4 +67,12 @@ public class WebWrapFragment extends DaggerFragment {
         webView.loadUrl(mUrl);
     }
 
+    public boolean canGoBack() {
+        return webView.canGoBack();
+    }
+
+    public void goBack() {
+        webView.goBack();
+    }
+
 }

@@ -11,7 +11,8 @@ import seleznov.nope.player.model.remote.dto.Tracks;
 public interface LastFmContract {
 
     interface Presenter extends IPresenter<View>{
-        void updateTopList();
+        void updateChartTopList();
+        void updateArtistTopList(String artist);
     }
 
     interface View extends IView<Presenter>{

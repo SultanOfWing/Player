@@ -1,13 +1,11 @@
+
 package seleznov.nope.player.model.remote.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by User on 21.06.2018.
- */
-
 public class Image {
+
     @SerializedName("#text")
     @Expose
     private String text;
@@ -30,4 +28,5 @@ public class Image {
     public void setSize(String size) {
         this.size = size;
     }
+
 }
