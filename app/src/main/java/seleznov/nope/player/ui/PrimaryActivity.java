@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +28,17 @@ import seleznov.nope.player.ui.lastfm.LastFmFragment;
 import seleznov.nope.player.ui.playlist.PlayListFragment;
 import seleznov.nope.player.ui.settings.SettingsFragment;
 
-public class PrimaryActivity extends DaggerAppCompatActivity {
+public class PrimaryActivity extends DaggerAppCompatActivity
+        implements LastFmFragment.KeyboardCallback{
+
+    @BindView(R.id.sliding_layout)
+    SlidingUpPanelLayout slidingUpPanelLayout;
+    @BindView(R.id.viewpager)
+    ViewPager viewPager;
+    @BindView(R.id.tabs)
+    TabLayout tabLayout;
+    @BindView(R.id.appbar)
+    AppBarLayout appBarLayout;
 
     @Inject
     PlayListFragment mPlayListFragment;
@@ -34,12 +48,6 @@ public class PrimaryActivity extends DaggerAppCompatActivity {
     SettingsFragment mSettingsFragment;
     @Inject
     ControllerFragment mControllerFragment;
-
-    @BindView(R.id.viewpager)
-    ViewPager viewPager;
-
-    @BindView(R.id.tabs)
-    TabLayout tabLayout;
 
     private List<Fragment> mFragmentList;
     private List<String> mFragmentTitleList;
@@ -52,7 +60,6 @@ public class PrimaryActivity extends DaggerAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_primary);
-
         ButterKnife.bind(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -79,9 +86,20 @@ public class PrimaryActivity extends DaggerAppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         fragmentManager.beginTransaction()
-                .add(R.id.controller_container, mControllerFragment)
+                .add(R.id.controller_container,
+                        mControllerFragment)
                 .commit();
 
+    }
+
+    @Override
+    public void onKeyboardUp() {
+        hideUiElements();
+    }
+
+    @Override
+    public void onKeyboardDown() {
+        showUiElements();
     }
 
     private void iniTab() {
@@ -98,4 +116,16 @@ public class PrimaryActivity extends DaggerAppCompatActivity {
         mFragmentTitleList.add(title);
         return this;
     }
+
+    private void hideUiElements(){
+        slidingUpPanelLayout.setPanelHeight(0);
+        appBarLayout.setExpanded(false);
+    }
+
+    private void showUiElements(){
+        int size = (int) getResources()
+                .getDimension(R.dimen.panel_size);
+        slidingUpPanelLayout.setPanelHeight(size);
+    }
+
 }

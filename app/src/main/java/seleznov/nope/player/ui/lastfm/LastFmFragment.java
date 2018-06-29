@@ -1,5 +1,6 @@
 package seleznov.nope.player.ui.lastfm;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -48,10 +49,16 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
     @Inject
     TrackListManager mTrackListManager;
 
-    private View mView;
+    private KeyboardCallback mCallback;
 
     @Inject
     public LastFmFragment(){};
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallback = (KeyboardCallback) context;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,6 +119,18 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
         searchView.setOnSearchClickListener(view -> {
             String query = Pref.getQuery(getContext());
             searchView.setQuery(query, false);
+          //  mCallback.onKeyboardUp();
+        });
+
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b){
+                    mCallback.onKeyboardUp();
+                }else {
+                    mCallback.onKeyboardDown();
+                }
+            }
         });
     }
 
@@ -130,10 +149,21 @@ public class LastFmFragment extends DaggerFragment implements LastFmContract.Vie
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
+    }
+
+    @Override
     public void setTopList(Tracks tracks){
         List<Track> trackList = tracks.getTrack();
         mLastFmAdapter.setList(trackList);
         recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    public interface KeyboardCallback{
+        void onKeyboardUp();
+        void onKeyboardDown();
     }
 
 }
