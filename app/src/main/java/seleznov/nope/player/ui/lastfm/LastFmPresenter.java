@@ -4,7 +4,9 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import seleznov.nope.player.helper.Pref;
 import seleznov.nope.player.model.remote.LastFmApi;
+import seleznov.nope.player.model.remote.dto.LastFm;
 
 
 /**
@@ -29,20 +31,21 @@ public class LastFmPresenter implements LastFmContract.Presenter {
     }
 
     @Override
-    public void updateChartTopList(String artist) {
+    public void updateChartTopList(@Nullable String artist) {
         if(mView == null){
             return;
         }
         if(artist == null){
             mLastFmApi.getTracks(METHOD_CHART_TOP, API_KEY, FORMAT)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(lastFm -> {mView.setTopList(lastFm.getTracks());},
+                    .subscribe(lastFm -> {mView.setTopList(lastFm.getTracks(), artist);},
                             Throwable::printStackTrace);
         }else {
             mLastFmApi.getTracksByArtist(METHOD_ARTIST_TOP, artist, API_KEY, FORMAT)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(lastFm -> {mView.setTopList(lastFm.getToptracks());},
-                            Throwable::printStackTrace);
+                    .subscribe(lastFm -> {mView.setTopList(lastFm.getToptracks(), artist);},
+                            error->{ mView.showSnackbar();}
+                       );
         }
 
     }

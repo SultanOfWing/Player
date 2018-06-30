@@ -50,8 +50,6 @@ public class PlayListFragment extends DaggerFragment implements PlayListContract
     @BindView(R.id.track_recycler_view)
     RecyclerView recyclerView;
 
-    private View mView;
-
     @Inject
     public PlayListFragment(){}
 

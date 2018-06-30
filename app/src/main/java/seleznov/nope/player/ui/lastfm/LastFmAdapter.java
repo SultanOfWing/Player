@@ -50,15 +50,22 @@ public class LastFmAdapter extends AdapterAbs<Track, LastFmAdapter.CloudHolder> 
         }
 
         @Override
-        public void bindItem(Track item) {
+        public void bindItem(@NonNull Track item) {
+
             String name = item.getName();
             trackName.setText(name);
 
             String artist = item.getArtist().getName();
             trackArtist.setText(artist);
 
+            String imageUrl = item.getImage().get(0).getText();
+            if (imageUrl != null && imageUrl.trim().isEmpty())
+            {
+                imageUrl = null;
+            }
+
             Picasso.with(mContext)
-                    .load(item.getImage().get(0).getText())
+                    .load(imageUrl)
                     .placeholder(R.drawable.lastfm_icon)
                     .into(albumImg);
         }

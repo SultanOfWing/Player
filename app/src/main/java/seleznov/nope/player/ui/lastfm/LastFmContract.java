@@ -15,6 +15,7 @@ public interface LastFmContract {
     }
 
     interface View extends IView<Presenter>{
-        void setTopList(Tracks tracks);
+        void setTopList(Tracks tracks, String artist);
+        void showSnackbar();
     }
 }
